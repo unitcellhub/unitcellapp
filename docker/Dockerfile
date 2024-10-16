@@ -1,8 +1,8 @@
 
-# This is docker file is not intented to be run independently; rather, it is
+# This docker file is not intented to be run independently; rather, it is
 # intended to be used in multilevel docker files. The primary reason for
 # building this docker file separately is to isolate the baseline python
-# environment from the overall ldt docker build, which can be hard to degub when
+# environment from the overall docker build, which can be hard to debug when
 # waiting for all of the required python libraries to build (even though they
 # are relatively static from a development standpoint.)
 
