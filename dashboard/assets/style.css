@@ -1,0 +1,41 @@
+/* https://community.plotly.com/t/show-loading-spinner-over-graph/46992/2 */
+/* dcc.Loading component with transparent background */
+/* this defines a style for a Loading component with parent_className='loading-wrapper' */
+.loading_wrapper > div {
+    visibility: visible !important;
+}
+
+.danger .rc-slider-track {
+    background-color: rgba(var(--bs-danger-rgb),.5);
+}
+  
+.danger .rc-slider-handle {
+    border: solid 1px var(--bs-danger);
+}
+
+.danger .rc-slider-handle:hover {
+    border: solid 1px var(--bs-danger);
+}
+
+.danger .rc-slider-handle-click-focused:focus {
+    border: solid 1px var(--bs-danger);
+}
+
+/*  when using Bootstrap, this will add row borders to the table in dcc.Markdown
+ *   Table
+ https://community.plotly.com/t/tables-in-markdown/15823/8
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+table {
+    border-collapse: collapse;
+  }
+  th:not(.CalendarDay),
+  td:not(.CalendarDay) {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #E1E1E1; }
+  th:first-child:not(.CalendarDay),
+  td:first-child:not(.CalendarDay) {
+    padding-left: 0; }
+  th:last-child:not(.CalendarDay),
+  td:last-child:not(.CalendarDay) {
+    padding-right: 0; }

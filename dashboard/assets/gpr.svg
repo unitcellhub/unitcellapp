@@ -1,0 +1,138 @@
+<svg class="main-svg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="400" height="200" style="" viewBox="0 0 400 200">
+    <rect x="0" y="0" width="400" height="200" style="fill: rgb(255, 255, 255); fill-opacity: 1;" />
+    <defs id="defs-fad4fa">
+        <g class="clips">
+            <clipPath id="clipfad4faxyplot" class="plotclip">
+                <rect width="380" height="180" />
+            </clipPath>
+            <clipPath class="axesclip" id="clipfad4fax">
+                <rect x="10" y="0" width="380" height="200" />
+            </clipPath>
+            <clipPath class="axesclip" id="clipfad4fay">
+                <rect x="0" y="10" width="400" height="180" />
+            </clipPath>
+            <clipPath class="axesclip" id="clipfad4faxy">
+                <rect x="10" y="10" width="380" height="180" />
+            </clipPath>
+        </g>
+        <g class="gradients" />
+        <g class="patterns" />
+    </defs>
+    <g class="bglayer">
+        <rect class="bg" x="10" y="10" width="380" height="180" style="fill: rgb(255, 255, 255); fill-opacity: 1; stroke-width: 0;" />
+    </g>
+    <g class="layer-below">
+        <g class="imagelayer" />
+        <g class="shapelayer" />
+    </g>
+    <g class="cartesianlayer">
+        <g class="subplot xy">
+            <g class="layer-subplot">
+                <g class="shapelayer" />
+                <g class="imagelayer" />
+            </g>
+            <g class="gridlayer">
+                <g class="x">
+                    <path class="xgrid crisp" transform="translate(32.75,0)" d="M0,10v180" style="stroke: rgb(245, 245, 245); stroke-opacity: 1; stroke-width: 0.5px;" />
+                    <path class="xgrid crisp" transform="translate(116.38,0)" d="M0,10v180" style="stroke: rgb(245, 245, 245); stroke-opacity: 1; stroke-width: 0.5px;" />
+                    <path class="xgrid crisp" transform="translate(200,0)" d="M0,10v180" style="stroke: rgb(245, 245, 245); stroke-opacity: 1; stroke-width: 0.5px;" />
+                    <path class="xgrid crisp" transform="translate(283.63,0)" d="M0,10v180" style="stroke: rgb(245, 245, 245); stroke-opacity: 1; stroke-width: 0.5px;" />
+                    <path class="xgrid crisp" transform="translate(367.25,0)" d="M0,10v180" style="stroke: rgb(245, 245, 245); stroke-opacity: 1; stroke-width: 0.5px;" />
+                </g>
+                <g class="y">
+                    <path class="ygrid crisp" transform="translate(0,177.94)" d="M10,0h380" style="stroke: rgb(245, 245, 245); stroke-opacity: 1; stroke-width: 0.5px;" />
+                    <path class="ygrid crisp" transform="translate(0,142.82)" d="M10,0h380" style="stroke: rgb(245, 245, 245); stroke-opacity: 1; stroke-width: 0.5px;" />
+                    <path class="ygrid crisp" transform="translate(0,107.7)" d="M10,0h380" style="stroke: rgb(245, 245, 245); stroke-opacity: 1; stroke-width: 0.5px;" />
+                    <path class="ygrid crisp" transform="translate(0,72.58)" d="M10,0h380" style="stroke: rgb(245, 245, 245); stroke-opacity: 1; stroke-width: 0.5px;" />
+                    <path class="ygrid crisp" transform="translate(0,37.45)" d="M10,0h380" style="stroke: rgb(245, 245, 245); stroke-opacity: 1; stroke-width: 0.5px;" />
+                </g>
+            </g>
+            <g class="zerolinelayer" />
+            <path class="xlines-below" />
+            <path class="ylines-below" />
+            <g class="overlines-below" />
+            <g class="xaxislayer-below" />
+            <g class="yaxislayer-below" />
+            <g class="overaxes-below" />
+            <g class="plot" transform="translate(10,10)" clip-path="url(#clipfad4faxyplot)">
+                <g class="scatterlayer mlayer">
+                    <g class="trace scatter trace1fd466" style="stroke-miterlimit: 2;">
+                        <g class="fills">
+                            <g>
+                                <path class="js-fill" d="M22.75,148.41L36.27,127.43L39.64,122.76L49.78,110.27L53.16,106.61L63.3,97.11L66.67,94.41L76.81,87.57L80.19,85.67L90.33,81L93.7,79.74L107.22,75.97L110.6,75.29L127.49,73.05L130.87,72.78L157.9,71.75L161.28,71.69L198.45,70.3L201.83,70.04L225.48,67.29L228.86,66.74L249.13,62.58L252.51,61.74L272.78,55.64L276.16,54.45L296.43,46.23L299.81,44.68L320.08,34.14L323.46,32.18L340.36,21.43L343.73,19.08L357.25,9L357.25,53.09L347.11,59.12L343.73,61.06L323.46,71.78L320.08,73.42L299.81,82.31L296.43,83.64L276.16,90.67L272.78,91.69L252.51,96.92L249.13,97.64L228.86,101.2L225.48,101.67L201.83,104.02L198.45,104.24L157.9,105.46L154.52,105.51L127.49,106.47L124.11,106.73L107.22,108.86L103.84,109.5L90.33,113.07L86.95,114.24L76.81,118.61L73.43,120.38L63.3,126.72L59.92,129.21L49.78,137.92L46.4,141.26L36.27,152.65L32.89,156.9L22.75,171Z" style="fill: rgb(252, 141, 98); fill-opacity: 0.5; stroke-width: 0;" />
+                            </g>
+                        </g>
+                        <g class="errorbars" />
+                        <g class="lines">
+                            <path class="js-line" d="M22.75,171L32.89,156.9L36.27,152.65L46.4,141.26L49.78,137.92L59.92,129.21L63.3,126.72L73.43,120.38L76.81,118.61L86.95,114.24L90.33,113.07L103.84,109.5L107.22,108.86L124.11,106.73L127.49,106.47L154.52,105.51L157.9,105.46L198.45,104.24L201.83,104.02L225.48,101.67L228.86,101.2L249.13,97.64L252.51,96.92L272.78,91.69L276.16,90.67L296.43,83.64L299.81,82.31L320.08,73.42L323.46,71.78L343.73,61.06L347.11,59.12L357.25,53.09" style="vector-effect: non-scaling-stroke; fill: none; stroke: rgb(252, 141, 98); stroke-opacity: 1; stroke-width: 2px; opacity: 1;" />
+                        </g>
+                        <g class="points" />
+                        <g class="text" />
+                    </g>
+                    <g class="trace scatter trace0b1496" style="stroke-miterlimit: 2;">
+                        <g class="fills" />
+                        <g class="errorbars" />
+                        <g class="lines">
+                            <path class="js-line" d="M22.75,148.41L36.27,127.43L39.64,122.76L49.78,110.27L53.16,106.61L63.3,97.11L66.67,94.41L76.81,87.57L80.19,85.67L90.33,81L93.7,79.74L107.22,75.97L110.6,75.29L127.49,73.05L130.87,72.78L157.9,71.75L161.28,71.69L198.45,70.3L201.83,70.04L225.48,67.29L228.86,66.74L249.13,62.58L252.51,61.74L272.78,55.64L276.16,54.45L296.43,46.23L299.81,44.68L320.08,34.14L323.46,32.18L340.36,21.43L343.73,19.08L357.25,9" style="vector-effect: non-scaling-stroke; fill: none; stroke: rgb(252, 141, 98); stroke-opacity: 1; stroke-width: 2px; opacity: 1;" />
+                        </g>
+                        <g class="points" />
+                        <g class="text" />
+                    </g>
+                    <g class="trace scatter traced9af40" style="stroke-miterlimit: 2; opacity: 1;">
+                        <g class="fills" />
+                        <g class="errorbars" />
+                        <g class="lines" />
+                        <g class="points">
+                            <path class="point" transform="translate(22.75,159.05)" d="M3,0A3,3 0 1,1 0,-3A3,3 0 0,1 3,0Z" style="opacity: 1; stroke-width: 0px; fill: rgb(102, 194, 165); fill-opacity: 1;" />
+                            <path class="point" transform="translate(190,89.24)" d="M3,0A3,3 0 1,1 0,-3A3,3 0 0,1 3,0Z" style="opacity: 1; stroke-width: 0px; fill: rgb(102, 194, 165); fill-opacity: 1;" />
+                            <path class="point" transform="translate(106.38,92)" d="M3,0A3,3 0 1,1 0,-3A3,3 0 0,1 3,0Z" style="opacity: 1; stroke-width: 0px; fill: rgb(102, 194, 165); fill-opacity: 1;" />
+                            <path class="point" transform="translate(43.66,124.19)" d="M3,0A3,3 0 1,1 0,-3A3,3 0 0,1 3,0Z" style="opacity: 1; stroke-width: 0px; fill: rgb(102, 194, 165); fill-opacity: 1;" />
+                            <path class="point" transform="translate(64.56,119.78)" d="M3,0A3,3 0 1,1 0,-3A3,3 0 0,1 3,0Z" style="opacity: 1; stroke-width: 0px; fill: rgb(102, 194, 165); fill-opacity: 1;" />
+                            <path class="point" transform="translate(273.63,73.57)" d="M3,0A3,3 0 1,1 0,-3A3,3 0 0,1 3,0Z" style="opacity: 1; stroke-width: 0px; fill: rgb(102, 194, 165); fill-opacity: 1;" />
+                            <path class="point" transform="translate(357.25,21.97)" d="M3,0A3,3 0 1,1 0,-3A3,3 0 0,1 3,0Z" style="opacity: 1; stroke-width: 0px; fill: rgb(102, 194, 165); fill-opacity: 1;" />
+                        </g>
+                        <g class="text" />
+                    </g>
+                    <g class="trace scatter trace494cd2" style="stroke-miterlimit: 2; opacity: 1;">
+                        <g class="fills" />
+                        <g class="errorbars" />
+                        <g class="lines">
+                            <path class="js-line" d="M22.75,160.25L36.27,140.58L39.64,136.24L49.78,124.66L53.16,121.28L63.3,112.5L66.67,110L76.81,103.69L80.19,101.94L90.33,97.64L93.7,96.49L107.22,93.04L110.6,92.42L127.49,90.39L130.87,90.15L157.9,89.24L161.28,89.19L198.45,87.91L201.83,87.67L225.48,85.12L228.86,84.62L249.13,80.77L252.51,79.98L272.78,74.33L276.16,73.23L296.43,65.61L299.81,64.17L320.08,54.48L323.46,52.68L343.73,40.81L347.11,38.65L357.25,31.83" style="vector-effect: non-scaling-stroke; fill: none; stroke: rgb(102, 194, 165); stroke-opacity: 1; stroke-width: 2px; opacity: 1;" />
+                        </g>
+                        <g class="points" />
+                        <g class="text" />
+                    </g>
+                </g>
+            </g>
+            <g class="overplot" />
+            <path class="xlines-above crisp" d="M0,0" style="fill: none;" />
+            <path class="ylines-above crisp" d="M0,0" style="fill: none;" />
+            <g class="overlines-above" />
+            <g class="xaxislayer-above" />
+            <g class="yaxislayer-above" />
+            <g class="overaxes-above" />
+        </g>
+    </g>
+    <g class="polarlayer" />
+    <g class="smithlayer" />
+    <g class="ternarylayer" />
+    <g class="geolayer" />
+    <g class="funnelarealayer" />
+    <g class="pielayer" />
+    <g class="iciclelayer" />
+    <g class="treemaplayer" />
+    <g class="sunburstlayer" />
+    <g class="glimages" />
+    <defs id="topdefs-fad4fa">
+        <g class="clips" />
+    </defs>
+    <g class="layer-above">
+        <g class="imagelayer" />
+        <g class="shapelayer" />
+    </g>
+    <g class="infolayer">
+        <g class="g-gtitle" />
+        <g class="g-xtitle" />
+        <g class="g-ytitle" />
+    </g>
+</svg>

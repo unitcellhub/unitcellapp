@@ -1,0 +1,283 @@
+{
+    "{\"qoi\":\"custom1\",\"type\":\"custom-qoi-label\"}.value": "Estimated crush strength (MPa)",
+    "{\"qoi\":\"custom2\",\"type\":\"custom-qoi-label\"}.value": "Estimated densification strain (mm/mm)",
+    "{\"qoi\":\"custom3\",\"type\":\"custom-qoi-label\"}.value": "Estimated energy density (MPa mm/mm)",
+    "{\"qoi\":\"custom4\",\"type\":\"custom-qoi-label\"}.value": null,
+    "{\"qoi\":\"custom5\",\"type\":\"custom-qoi-label\"}.value": null,
+    "{\"qoi\":\"custom6\",\"type\":\"custom-qoi-label\"}.value": null,
+    "{\"qoi\":\"custom7\",\"type\":\"custom-qoi-label\"}.value": null,
+    "{\"qoi\":\"custom8\",\"type\":\"custom-qoi-label\"}.value": null,
+    "{\"qoi\":\"custom9\",\"type\":\"custom-qoi-label\"}.value": null,
+    "{\"qoi\":\"custom10\",\"type\":\"custom-qoi-label\"}.value": null,
+    "{\"qoi\":\"custom11\",\"type\":\"custom-qoi-label\"}.value": null,
+    "{\"qoi\":\"custom12\",\"type\":\"custom-qoi-label\"}.value": null,
+    "{\"qoi\":\"custom13\",\"type\":\"custom-qoi-label\"}.value": null,
+    "{\"qoi\":\"custom14\",\"type\":\"custom-qoi-label\"}.value": null,
+    "{\"qoi\":\"custom15\",\"type\":\"custom-qoi-label\"}.value": null,
+    "{\"qoi\":\"custom16\",\"type\":\"custom-qoi-label\"}.value": null,
+    "{\"qoi\":\"custom17\",\"type\":\"custom-qoi-label\"}.value": null,
+    "{\"qoi\":\"custom18\",\"type\":\"custom-qoi-label\"}.value": null,
+    "{\"qoi\":\"custom19\",\"type\":\"custom-qoi-label\"}.value": null,
+    "{\"qoi\":\"custom20\",\"type\":\"custom-qoi-label\"}.value": null,
+    "{\"qoi\":\"custom1\",\"type\":\"custom-qoi-eqn\"}.value": "3*50/vonMisesWorst33",
+    "{\"qoi\":\"custom2\",\"type\":\"custom-qoi-eqn\"}.value": "1-1.4*relativeDensity",
+    "{\"qoi\":\"custom3\",\"type\":\"custom-qoi-eqn\"}.value": "custom1*custom2",
+    "{\"qoi\":\"custom4\",\"type\":\"custom-qoi-eqn\"}.value": null,
+    "{\"qoi\":\"custom5\",\"type\":\"custom-qoi-eqn\"}.value": null,
+    "{\"qoi\":\"custom6\",\"type\":\"custom-qoi-eqn\"}.value": null,
+    "{\"qoi\":\"custom7\",\"type\":\"custom-qoi-eqn\"}.value": null,
+    "{\"qoi\":\"custom8\",\"type\":\"custom-qoi-eqn\"}.value": null,
+    "{\"qoi\":\"custom9\",\"type\":\"custom-qoi-eqn\"}.value": null,
+    "{\"qoi\":\"custom10\",\"type\":\"custom-qoi-eqn\"}.value": null,
+    "{\"qoi\":\"custom11\",\"type\":\"custom-qoi-eqn\"}.value": null,
+    "{\"qoi\":\"custom12\",\"type\":\"custom-qoi-eqn\"}.value": null,
+    "{\"qoi\":\"custom13\",\"type\":\"custom-qoi-eqn\"}.value": null,
+    "{\"qoi\":\"custom14\",\"type\":\"custom-qoi-eqn\"}.value": null,
+    "{\"qoi\":\"custom15\",\"type\":\"custom-qoi-eqn\"}.value": null,
+    "{\"qoi\":\"custom16\",\"type\":\"custom-qoi-eqn\"}.value": null,
+    "{\"qoi\":\"custom17\",\"type\":\"custom-qoi-eqn\"}.value": null,
+    "{\"qoi\":\"custom18\",\"type\":\"custom-qoi-eqn\"}.value": null,
+    "{\"qoi\":\"custom19\",\"type\":\"custom-qoi-eqn\"}.value": null,
+    "{\"qoi\":\"custom20\",\"type\":\"custom-qoi-eqn\"}.value": null,
+    "qoi.value": [
+        "relativeDensity",
+        "custom3"
+    ],
+    "normalization.value": 0,
+    "extraFilters.value": [
+        "custom1",
+        "custom2"
+    ],
+    "forms.value": [
+        "truss",
+        "walledtpms"
+    ],
+    "{\"qoi\":\"relativeDensity\",\"type\":\"slider-qoiFilter\"}.value": [
+        0,
+        0.3
+    ],
+    "{\"qoi\":\"E1\",\"type\":\"slider-qoiFilter\"}.value": [
+        0,
+        0.76
+    ],
+    "{\"qoi\":\"E2\",\"type\":\"slider-qoiFilter\"}.value": [
+        0,
+        0.76
+    ],
+    "{\"qoi\":\"E3\",\"type\":\"slider-qoiFilter\"}.value": [
+        0,
+        0.75
+    ],
+    "{\"qoi\":\"Emin\",\"type\":\"slider-qoiFilter\"}.value": [
+        0,
+        0.73
+    ],
+    "{\"qoi\":\"Emax\",\"type\":\"slider-qoiFilter\"}.value": [
+        0,
+        0.76
+    ],
+    "{\"qoi\":\"G12\",\"type\":\"slider-qoiFilter\"}.value": [
+        0,
+        0.28400000000000003
+    ],
+    "{\"qoi\":\"G23\",\"type\":\"slider-qoiFilter\"}.value": [
+        0,
+        0.281
+    ],
+    "{\"qoi\":\"G13\",\"type\":\"slider-qoiFilter\"}.value": [
+        0,
+        0.28300000000000003
+    ],
+    "{\"qoi\":\"Gmin\",\"type\":\"slider-qoiFilter\"}.value": [
+        0,
+        0.281
+    ],
+    "{\"qoi\":\"Gmax\",\"type\":\"slider-qoiFilter\"}.value": [
+        0,
+        0.292
+    ],
+    "{\"qoi\":\"nu12\",\"type\":\"slider-qoiFilter\"}.value": [
+        -58,
+        74
+    ],
+    "{\"qoi\":\"nu23\",\"type\":\"slider-qoiFilter\"}.value": [
+        -3.9000000000000004,
+        7.800000000000001
+    ],
+    "{\"qoi\":\"nu13\",\"type\":\"slider-qoiFilter\"}.value": [
+        -3.9000000000000004,
+        7.800000000000001
+    ],
+    "{\"qoi\":\"numin\",\"type\":\"slider-qoiFilter\"}.value": [
+        -108,
+        1
+    ],
+    "{\"qoi\":\"numax\",\"type\":\"slider-qoiFilter\"}.value": [
+        0,
+        106
+    ],
+    "{\"qoi\":\"vonMisesWorst11\",\"type\":\"slider-qoiFilter\"}.value": [
+        0,
+        13700
+    ],
+    "{\"qoi\":\"vonMisesWorst22\",\"type\":\"slider-qoiFilter\"}.value": [
+        0,
+        13700
+    ],
+    "{\"qoi\":\"vonMisesWorst33\",\"type\":\"slider-qoiFilter\"}.value": [
+        0,
+        6400
+    ],
+    "{\"qoi\":\"vonMisesWorst12\",\"type\":\"slider-qoiFilter\"}.value": [
+        0,
+        17500
+    ],
+    "{\"qoi\":\"vonMisesWorst23\",\"type\":\"slider-qoiFilter\"}.value": [
+        0,
+        6400
+    ],
+    "{\"qoi\":\"vonMisesWorst13\",\"type\":\"slider-qoiFilter\"}.value": [
+        0,
+        6400
+    ],
+    "{\"qoi\":\"anisotropyIndex\",\"type\":\"slider-qoiFilter\"}.value": [
+        0,
+        28000
+    ],
+    "{\"qoi\":\"k1\",\"type\":\"slider-qoiFilter\"}.value": [
+        0,
+        0.77
+    ],
+    "{\"qoi\":\"k2\",\"type\":\"slider-qoiFilter\"}.value": [
+        0,
+        0.77
+    ],
+    "{\"qoi\":\"k3\",\"type\":\"slider-qoiFilter\"}.value": [
+        0,
+        0.76
+    ],
+    "{\"qoi\":\"kmax\",\"type\":\"slider-qoiFilter\"}.value": [
+        0,
+        0.77
+    ],
+    "{\"qoi\":\"kmin\",\"type\":\"slider-qoiFilter\"}.value": [
+        0,
+        0.76
+    ],
+    "{\"qoi\":\"relativeSurfaceArea\",\"type\":\"slider-qoiFilter\"}.value": [
+        0.08,
+        2.56
+    ],
+    "{\"qoi\":\"xyAR\",\"type\":\"slider-qoiFilter\"}.value": [
+        0.2,
+        5
+    ],
+    "{\"qoi\":\"yzAR\",\"type\":\"slider-qoiFilter\"}.value": [
+        0.2,
+        5
+    ],
+    "{\"qoi\":\"xzAR\",\"type\":\"slider-qoiFilter\"}.value": [
+        0.2,
+        5
+    ],
+    "{\"qoi\":\"length\",\"type\":\"slider-qoiFilter\"}.value": [
+        1,
+        5
+    ],
+    "{\"qoi\":\"width\",\"type\":\"slider-qoiFilter\"}.value": [
+        1,
+        5
+    ],
+    "{\"qoi\":\"height\",\"type\":\"slider-qoiFilter\"}.value": [
+        1,
+        5
+    ],
+    "{\"qoi\":\"thickness\",\"type\":\"slider-qoiFilter\"}.value": [
+        0.05,
+        0.3
+    ],
+    "{\"qoi\":\"radius\",\"type\":\"slider-qoiFilter\"}.value": [
+        0.05,
+        0.3
+    ],
+    "{\"qoi\":\"custom1\",\"type\":\"slider-qoiFilter\"}.value": [
+        0,
+        0.16
+    ],
+    "{\"qoi\":\"custom2\",\"type\":\"slider-qoiFilter\"}.value": [
+        0.25,
+        1
+    ],
+    "{\"qoi\":\"custom3\",\"type\":\"slider-qoiFilter\"}.value": [
+        -11,
+        27
+    ],
+    "{\"qoi\":\"custom4\",\"type\":\"slider-qoiFilter\"}.value": [
+        0.9,
+        1.1
+    ],
+    "{\"qoi\":\"custom5\",\"type\":\"slider-qoiFilter\"}.value": [
+        0.9,
+        1.1
+    ],
+    "{\"qoi\":\"custom6\",\"type\":\"slider-qoiFilter\"}.value": [
+        0.9,
+        1.1
+    ],
+    "{\"qoi\":\"custom7\",\"type\":\"slider-qoiFilter\"}.value": [
+        0.9,
+        1.1
+    ],
+    "{\"qoi\":\"custom8\",\"type\":\"slider-qoiFilter\"}.value": [
+        0.9,
+        1.1
+    ],
+    "{\"qoi\":\"custom9\",\"type\":\"slider-qoiFilter\"}.value": [
+        0.9,
+        1.1
+    ],
+    "{\"qoi\":\"custom10\",\"type\":\"slider-qoiFilter\"}.value": [
+        0.9,
+        1.1
+    ],
+    "{\"qoi\":\"custom11\",\"type\":\"slider-qoiFilter\"}.value": [
+        0.9,
+        1.1
+    ],
+    "{\"qoi\":\"custom12\",\"type\":\"slider-qoiFilter\"}.value": [
+        0.9,
+        1.1
+    ],
+    "{\"qoi\":\"custom13\",\"type\":\"slider-qoiFilter\"}.value": [
+        0.9,
+        1.1
+    ],
+    "{\"qoi\":\"custom14\",\"type\":\"slider-qoiFilter\"}.value": [
+        0.9,
+        1.1
+    ],
+    "{\"qoi\":\"custom15\",\"type\":\"slider-qoiFilter\"}.value": [
+        0.9,
+        1.1
+    ],
+    "{\"qoi\":\"custom16\",\"type\":\"slider-qoiFilter\"}.value": [
+        0.9,
+        1.1
+    ],
+    "{\"qoi\":\"custom17\",\"type\":\"slider-qoiFilter\"}.value": [
+        0.9,
+        1.1
+    ],
+    "{\"qoi\":\"custom18\",\"type\":\"slider-qoiFilter\"}.value": [
+        0.9,
+        1.1
+    ],
+    "{\"qoi\":\"custom19\",\"type\":\"slider-qoiFilter\"}.value": [
+        0.9,
+        1.1
+    ],
+    "{\"qoi\":\"custom20\",\"type\":\"slider-qoiFilter\"}.value": [
+        0.9,
+        1.1
+    ]
+}

@@ -1,0 +1,78 @@
+body {
+    background-color: #ffffff;
+    /* background-image: url("build/icon.png"); */
+    /* background-repeat: no-repeat; */
+    /* background-attachment: fixed; */
+    /* background-position: 50% 50%; */
+}
+
+.outer {
+  display: table;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+}
+
+.middle {
+  display: table-cell;
+  vertical-align: middle;
+}
+
+.inner {
+  margin-left: auto;
+  margin-right: auto;
+  width: 400px;
+  /* Whatever width you want */
+}
+
+.flex {
+    -webkit-box-flex: 1;
+    -ms-flex: 1 1 auto;
+    flex: 1 1 auto
+}
+    .loader {
+        /* border: 5px solid rgba(18, 65, 145, 255); */
+        /* border-radius: 50%; */
+        /* border-top: 5px solid #ffffff; */
+        /* width: 40px; */
+        /* height: 40px; */
+        width: 120px;
+        height: 120px;
+        -webkit-animation: spin 4s linear infinite;
+        /* Safari */
+        animation: spin 4s linear infinite;
+        margin: auto;
+        /* left: 0; */
+        /* right: 0; */
+        /* top: 0px; */
+        /* bottom: 0; */
+        /* position: fixed; */
+    }
+
+    /* Safari */
+    @-webkit-keyframes spin {
+        0% {
+            -webkit-transform: rotate(0deg);
+        }
+
+        100% {
+            -webkit-transform: rotate(360deg);
+        }
+    }
+
+    @keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+
+    .center {
+        border: none !important;
+        text-align: center;
+    }
