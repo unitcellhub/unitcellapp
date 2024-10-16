@@ -1,0 +1,24 @@
+*.log
+Database/*
+*.pyc
+unitcell.egg*
+*.ipynb_checkpoints*
+*.nbc
+*.nbi
+config.json
+.venv/
+.conda/
+
+# Ignore UnitcellApp distribution files
+dist/*
+build/*
+
+# Ignore npm files
+electron/node_modules/*
+electron/package-lock.json
+electron/out/*
+node_modules/*
+electron/dist/*
+yarn.lock
+
+

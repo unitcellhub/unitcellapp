@@ -1,0 +1,17 @@
+scikit-image
+numexpr
+blosc
+vtk
+flask
+nbserverproxy
+werkzeug==2.0.0
+dash==2.6.0
+dash_bootstrap_components
+dash_vtk
+joblib
+pyvista
+scikit-learn==1.0.2
+dill
+pyinstaller
+waitress
+git+ssh://git@github.com/unitcellhub/unitcellengine.git@main#egg=unitcell

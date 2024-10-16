@@ -1,0 +1,39 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Electron Main",
+            "program": "${workspaceFolder}/electron/main.js",
+            "request": "launch",
+            "runtimeExecutable": "${workspaceFolder}/electron/node_modules/.bin/electron",
+            "args" : ["."],
+            "outputCapture": "std",
+            "windows": {
+                "runtimeExecutable": "${workspaceFolder}/electron/node_modules/.bin/electron.cmd"
+            }
+        },
+        {
+            "name": "Python: Current File",
+            "type": "python",
+            "request": "launch",
+            "program": "${relativeFile}",
+            "console": "integratedTerminal",
+            "env": {"PYTHONPATH": "${workspaceRoot}"},
+            "justMyCode": false,
+        },
+        {
+            "name": "(Windows) Launch",
+            "type": "cppvsdbg",
+            "request": "launch",
+            "program": "enter program name, for example ${workspaceFolder}/a.exe",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": false
+        }
+    ]
+}
