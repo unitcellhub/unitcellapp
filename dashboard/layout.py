@@ -351,10 +351,10 @@ def image2base64(mat):
 
 # Load database file
 logger.debug(__file__)
-database = Path(__file__).parent.parent / Path("database/database.h5")
+database = Path(__file__).parent.parent / Path("database/unitcelldb.h5")
 
 # Open the database
-CACHE = Path(__file__).parent
+CACHE = Path(__file__).parent / Path("cache/")
 
 columns = list(_DEFAULT_OPTIONS.keys())
 try:
@@ -388,6 +388,16 @@ try:
     logger.debug("Pre-processed cache file exists. Loaded cached data.")
 except Exception as ex:
     logger.debug(ex)
+    # Check that the database exists. If not, through an error pointing to the github repository
+    if not database.exists():
+        raise RuntimeError(f"Unable to find lattice database file {database}. "
+                           "Check that it is in this location. To get a current "
+                           "version of the database, clone UnitcellDB from "
+                           "github.com/unitcellhub/unitcelldb and put unitcelldb.h5 "
+                           "into a folder called 'database' at the root of unitcellapp.")
+
+    # Load the lattice database file and fit surrogate models. Additionally, case
+    # the results to speedup the launch process
     with tables.open_file(database, "r") as h5file:
         logger.debug("Reading and pre-processing database...")
         # Pull out the database table
