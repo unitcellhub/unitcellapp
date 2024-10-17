@@ -22,7 +22,7 @@ In a terminal prompt
 
 ```
 git lfs install
-git clone https://github.jpl.nasa.gov/watkinrt/unitcellapp
+git clone https://github.com/unitcellhub/unitcellapp
 cd unitcellapp
 git checkout main
 python -m venv .venv
@@ -81,7 +81,7 @@ pip install jupyter-repo2docker
 and then run
 
 ```
-repo2docker --no-run --debug --ref "release" --image-name "unitellapp:release" </path/to/unitcellapp or https://github.jpl.nasa.gov/watkinrt/unitcellapp.git>
+repo2docker --no-run --debug --ref "release" --image-name "unitellapp:release" </path/to/unitcellapp or https://github.com/unitcellhub/unitcellapp.git>
 ```
 
 This will take some time to run, often on the order of 5-10 min, especially if this is the first execution and there are no Docker cache files to build off of.
@@ -121,9 +121,9 @@ Note that this is currently the least stable deployment mechanism.
 
 ## Custom lattice databases
 
-The default implementation is built around the data in [*UnitcellDB*](https://github.jpl.nasa.gov/watkinrt/unitcelldb).
+The default implementation is built around the data in [*UnitcellDB*](https://github.com/unitcellhub/unitcelldb).
 This data has been post processed and cached as [Dill](https://github.com/uqfoundation/dill)-based pickle files.
-A custom dataset, however, can be generated using [*UnitcellEngine*](https://github.jpl.nasa.gov/watkinrt/unitcellengine) and then fed into *UnitcellApp*.
+A custom dataset, however, can be generated using [*UnitcellEngine*](https://github.com/unitcellhub/unitcellengine) and then fed into *UnitcellApp*.
 - To do so, run all the desired *UnitcellEngine* simulations and compbine them together to create a primary HDF5 database file "database.h5".
 - Place this file in the local *UnitcellApp* folder tree under "database/database.h5".
 - Clear the "dashboard/" folder of any files names "database_*.pkl".
