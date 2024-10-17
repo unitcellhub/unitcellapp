@@ -5,5 +5,6 @@ dependencies:
   - python=3.10
   - pip
   - gunicorn
+  - jupyter-server-proxy
   - pip:
     - -r ../requirements.txt
