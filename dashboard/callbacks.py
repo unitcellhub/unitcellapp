@@ -168,7 +168,7 @@ def _createSubCardProps(unitcell, L, W, H, T, R, form, scustom, ssurrogate):
 
     # Construct custom surrogate equations
     logger.debug(f"Stored surrogate: {ssurrogate}")
-    surrogate = SURROGATE(ssurrogate)
+    models = SURROGATE(ssurrogate, form, unitcell)
     logger.debug(f"Processed surrogate: {ssurrogate}")
 
     # Create table of properties
@@ -180,7 +180,7 @@ def _createSubCardProps(unitcell, L, W, H, T, R, form, scustom, ssurrogate):
         ]
 
         # Pull out the surrogate models for this unit cell
-        models = surrogate[form][unitcell]
+        # models = surrogate[form][unitcell]
 
         # Loop through each design parameter and calculate the response
         df = _DATA[form][unitcell]
@@ -788,8 +788,8 @@ def updateOptions(values, labels, scustom):
 def updateCustomQOI(eqns, ssurrogate, sbounds, sdata):
     # @TODO: The filter bounds for nested custom variables doesn't get updated properly.
 
-    # Construct current custom surrogate models
-    surrogate = SURROGATE(ssurrogate)
+    # # Construct current custom surrogate models
+    # surrogate = SURROGATE(ssurrogate)
 
     # Create a dictionary to keep track of the updated custom surrogate models
     try:

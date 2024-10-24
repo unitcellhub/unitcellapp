@@ -14,9 +14,8 @@ import logging
 from copy import copy
 import blosc
 import json
-
+from functools import partial
 import re
-
 from sklearn.gaussian_process import GaussianProcessRegressor
 from sklearn.gaussian_process.kernels import RBF, WhiteKernel
 from sklearn.model_selection import cross_val_score
@@ -348,13 +347,27 @@ def image2base64(mat):
     im_url = "data:image/png;base64, " + encoded_image
     return im_url
 
+# Open the database
+CACHE = Path(__file__).parent / Path("cache/")
+
+# Construct the lattice cache filename
+def cacheFilename(form, unitcell):
+    return CACHE / Path(f"database_{form}_{unitcell}.pkl")
+
+# Load surrogate model from file
+def cacheLoad(form, unitcell):
+    # Read blosc compressed pickle file
+    filename = cacheFilename(form, unitcell)
+    logger.debug(f"Loading cache file {filename}")
+    with open(filename, "rb") as f:
+        data = f.read()
+    return pickle.loads(blosc.decompress(data))
+
 
 # Load database file
 logger.debug(__file__)
 database = Path(__file__).parent.parent / Path("database/unitcelldb.h5")
 
-# Open the database
-CACHE = Path(__file__).parent / Path("cache/")
 
 columns = list(_DEFAULT_OPTIONS.keys())
 try:
@@ -370,9 +383,10 @@ try:
             _DATA[form][unitcell] = tmp["data"]
             # In old version of the cache files, there are custom fields were
             # stored and we don't want to maintain them.
-            _SURROGATE[form][unitcell] = {
-                k: v for k, v in tmp["surrogate"].items() if "custom" not in k
-            }
+            _SURROGATE[form][unitcell] = partial(cacheLoad, form=form, unitcell=unitcell) 
+            # _SURROGATE[form][unitcell] = {
+            #     k: v for k, v in tmp["surrogate"].items() if "custom" not in k
+            # }
         except KeyError:
             _DATA[form] = {}
             _DATA[form][unitcell] = tmp["data"]
@@ -380,9 +394,10 @@ try:
             _SURROGATE[form] = {}
             # In old version of the cache files, there are custom fields were
             # stored and we don't want to maintain them.
-            _SURROGATE[form][unitcell] = {
-                k: v for k, v in tmp["surrogate"].items() if "custom" not in k
-            }
+            # _SURROGATE[form][unitcell] = {
+            #     k: v for k, v in tmp["surrogate"].items() if "custom" not in k
+            # }
+            _SURROGATE[form][unitcell] = partial(cacheLoad, form=form, unitcell=unitcell) 
     if not _DATA:
         raise IOError(f"No cached data files were found in {CACHE}.")
     logger.debug("Pre-processed cache file exists. Loaded cached data.")
@@ -551,6 +566,7 @@ except Exception as ex:
                 f.write(tosave)
                 # pickle.dump({"data": _DATA[form][unitcell],
                 #              "surrogate": _SURROGATE[form][unitcell]}, f)
+            _SURROGATE[form][unitcell] = partial(cacheLoad, form=form, unitcell=unitcell)
     logger.debug("Complete.")
 
 # Split the graph form into truss and corrugations
@@ -583,7 +599,7 @@ del _SURROGATE_MOD
 _SURROGATE_DEFAULT = ([], "nan")
 
 
-def SURROGATE(scustom):
+def SURROGATE(scustom, form, unitcell):
     """Take in custom equations for evaluation with surrogate quantities
 
     Arguments
@@ -606,17 +622,17 @@ def SURROGATE(scustom):
         # If the input is empty, set as default parameters
         custom = [_SURROGATE_DEFAULT for _ in range(NCUSTOM)]
 
-    surrogate = copy(_SURROGATE)
+    # surrogate = copy(_SURROGATE)
+    logger.info(f"Loading surrogate model for {unitcell} ({form})")
+    surrogate = _SURROGATE[form][unitcell]()['surrogate']
     for param, model in zip([f"custom{ind+1}" for ind in range(NCUSTOM)], custom):
-        for form, unitcells in _SURROGATE.items():
-            for unitcell, values in unitcells.items():
-                # Store a different unity definition for the custom fields
-                surrogate[form][unitcell][param] = {
-                    "model": model,
-                    "xscaler": None,
-                    "yscaler": None,
-                    "scores": None,
-                }
+        # Store a different unity definition for the custom fields
+        surrogate[param] = {
+            "model": model,
+            "xscaler": None,
+            "yscaler": None,
+            "scores": None,
+        }
 
     return surrogate
 
