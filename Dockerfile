@@ -7,7 +7,7 @@ SHELL ["/bin/bash", "--login", "-c"]
 # Copy in relevant files from the binder folder
 COPY requirements.txt /tmp/
 COPY dashboard/ /tmp/dashboard/
-COPY binder/ /tmp/binder/
+COPY docker/ /tmp/docker/
 WORKDIR /tmp/
 
 # Install required linux tools
@@ -17,7 +17,7 @@ WORKDIR /tmp/
 RUN conda init bash
 
 # Create a new python environment
-RUN conda env create -f binder/environment.yml
+RUN conda env create -f docker/environment.yml
 
 # Add conda activate to the bashrc so that the new environment is activated
 # prior to further RUN commands
