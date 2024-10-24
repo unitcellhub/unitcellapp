@@ -1,13 +1,12 @@
 import logging
-logging.basicConfig()
-logger = logging.getLogger("unitcell")
-logger.setLevel(logging.DEBUG)
-
-from dashboard.app import app, port
+from dashboard.app import app, portBinder
 from dashboard.layout import layout
 import dashboard.callbacks
 
 
+logging.basicConfig()
+logger = logging.getLogger("unitcell")
+logger.setLevel(logging.WARNING)
 
 # Set the app layout, which was defined in a submodule
 app.title = "UnitcellApp"
@@ -19,5 +18,5 @@ app.layout = layout
 server = app.server
 
 if __name__ == '__main__':
-    
-    app.run_server(debug=True, port=port)
+    logger.setLevel(logging.DEBUG)
+    app.run_server(debug=True, port=portBinder)

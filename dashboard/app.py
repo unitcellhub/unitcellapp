@@ -3,12 +3,12 @@ import dash_bootstrap_components as dbc
 import os
 
 # Setup Dash instance
-port = 5030
+portBinder = 5030
 try:
     # This is the essential definition needed to get this Dash app to 
     # run on mybinder. See https://github.com/plotly/dash/issues/1057 
     # for reference
-    basePrefix = '{}proxy/{}/'.format(os.environ['JUPYTERHUB_SERVICE_PREFIX'], port)  
+    basePrefix = '{}proxy/{}/'.format(os.environ['JUPYTERHUB_SERVICE_PREFIX'], portBinder)  
 except:
     basePrefix = "/"
 
