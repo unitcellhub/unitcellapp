@@ -121,7 +121,7 @@ This data has been post processed and cached as [Dill](https://github.com/uqfoun
 A custom dataset, however, can be generated using [*UnitcellEngine*](https://github.com/unitcellhub/unitcellengine) and then fed into *UnitcellApp*.
 - To do so, run all the desired *UnitcellEngine* simulations and compbine them together to create a primary HDF5 database file "database.h5".
 - Place this file in the local *UnitcellApp* folder tree under "database/database.h5".
-- Clear the "dashboard/" folder of any files names "database_*.pkl".
+- Clear the "dashboard/cache" folder of any files names "*.pkl".
 - We now need to post-process this database, not only calculating quantities of interested, but also running the ML learning process. This is all computed the first time that *UnitcellApp* is run (which can take 30-60 minutes depending on the size of the database) and then cached for subsequent access. To do so, run *UnitcellApp* as a [native web application](#native).
 
 Now, anytime that *UnitcellApp* is run, it will use this custom database.
