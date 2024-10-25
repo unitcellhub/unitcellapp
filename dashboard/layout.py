@@ -8,6 +8,7 @@ import pandas as pd
 import dill as pickle
 import base64
 import io
+import os
 from PIL import Image
 from pathlib import Path
 import tables
@@ -1058,7 +1059,7 @@ def _createCard(column):
         ),
         dcc.Slider(
             id={"type": "card-res", "index": column},
-            min=0.05,
+            min=float(os.getenv("RESOLUTION_LOWER", 0.25)),
             max=0.5,
             step=0.01,
             value=0.5,
