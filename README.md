@@ -80,15 +80,15 @@ docker run --env PORT=5030 --publish 5030:5030 --terminate unitcellhub/unitcella
 ```
 and then access *UnitcellApp* in your preferred browser at http://127.0.0.1:5030.
 
-[!NOTE]
-Port 5030 is arbitrary and can be changed as desired.
+> [!NOTE]
+> Port 5030 is arbitrary and can be changed as desired.
 
 ### Electron desktop application (Windows only)
 
-[!WARNING]
-This is a beta feature with no guarantees.
-On Windows, it often requires a degree of debugging to get working.
-This workflow should in theory work on other operating systems, but hasn't been tested.
+> [!WARNING]
+> This is a beta feature with no guarantees.
+> On Windows, it often requires a degree of debugging to get working.
+> This workflow should in theory work on other operating systems, but hasn't been tested.
 
 *UnitcellApp* can be wrapped by Electron to create a desktop application.
 As the backbone features are built upon Python, this requires some initial setup to create the binaries required by Electron.
