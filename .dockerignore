@@ -2,6 +2,7 @@
 **/.env
 **/.git
 **/__pycache__
+*.bak
 README.md
 electron/
 electron.bat
