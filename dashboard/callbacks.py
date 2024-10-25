@@ -1039,7 +1039,7 @@ def updateToolTips(hoverData, scurves):
         definition["unitcell"] = unitcell
         definition["form"] = form
 
-        image = IMAGES[form][unitcell][index]
+        image = IMAGES[form][unitcell]()[index]
 
         # Pull out curve color. Not, because there is a curvne number spans
         # all of the subplots, we're just interested in the first
@@ -1545,7 +1545,7 @@ def updateSelectedComparison(selected, scustom, scurves, sdata):
         L, W, H, T, R = parameters
 
         # Read in the image thumbnail for the unitcell
-        image = IMAGES[form][unitcell][index]
+        image = IMAGES[form][unitcell]()[index]
 
         # Pull out the relevant performance metrics and tabulate them
         df = data[form][unitcell]

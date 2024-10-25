@@ -1,5 +1,6 @@
 from dash import dcc, html
 import dash_bootstrap_components as dbc
+from dashboard.cache import CACHE, cacheLoad, cacheSave
 from unitcell.geometry.sdf import SDFGeometry
 from unitcell.analysis.homogenization import Ei, Ki, Gij, nuij
 import numpy as np
@@ -347,22 +348,6 @@ def image2base64(mat):
     im_url = "data:image/png;base64, " + encoded_image
     return im_url
 
-# Open the database
-CACHE = Path(__file__).parent / Path("cache/")
-
-# Construct the lattice cache filename
-def cacheFilename(form, unitcell):
-    return CACHE / Path(f"database_{form}_{unitcell}.pkl")
-
-# Load surrogate model from file
-def cacheLoad(form, unitcell):
-    # Read blosc compressed pickle file
-    filename = cacheFilename(form, unitcell)
-    logger.debug(f"Loading cache file {filename}")
-    with open(filename, "rb") as f:
-        data = f.read()
-    return pickle.loads(blosc.decompress(data))
-
 
 # Load database file
 logger.debug(__file__)
@@ -373,31 +358,32 @@ columns = list(_DEFAULT_OPTIONS.keys())
 try:
     _DATA = {}
     _SURROGATE = {}
+    _IMAGE = {}
     # raise Exception("Forced recompute")
-    for cache in CACHE.glob("database_*.pkl"):
+    for cache in CACHE.glob("data_*.pkl"):
         _, form, unitcell = cache.stem.split("_")
-        with open(cache, "rb") as f:
-            tmp = f.read()
-        tmp = pickle.loads(blosc.decompress(tmp))
+        _data = cacheLoad("data", form, unitcell)
         try:
-            _DATA[form][unitcell] = tmp["data"]
+            _DATA[form][unitcell] = _data
             # In old version of the cache files, there are custom fields were
             # stored and we don't want to maintain them.
-            _SURROGATE[form][unitcell] = partial(cacheLoad, form=form, unitcell=unitcell) 
+            _SURROGATE[form][unitcell] = partial(cacheLoad, kind="surrogates", form=form, unitcell=unitcell) 
+            _IMAGE[form][unitcell] = partial(cacheLoad, kind="images", form=form, unitcell=unitcell) 
             # _SURROGATE[form][unitcell] = {
             #     k: v for k, v in tmp["surrogate"].items() if "custom" not in k
             # }
         except KeyError:
+            # Initialize dictionaries as they don't exist yet 
             _DATA[form] = {}
-            _DATA[form][unitcell] = tmp["data"]
-
             _SURROGATE[form] = {}
-            # In old version of the cache files, there are custom fields were
-            # stored and we don't want to maintain them.
-            # _SURROGATE[form][unitcell] = {
-            #     k: v for k, v in tmp["surrogate"].items() if "custom" not in k
-            # }
-            _SURROGATE[form][unitcell] = partial(cacheLoad, form=form, unitcell=unitcell) 
+            _IMAGE[form] = {}
+
+            # Store data
+            _DATA[form][unitcell] = _data
+
+            # Store loader functions
+            _SURROGATE[form][unitcell] = partial(cacheLoad, kind="surrogates", form=form, unitcell=unitcell) 
+            _IMAGE[form][unitcell] = partial(cacheLoad, kind="images", form=form, unitcell=unitcell) 
     if not _DATA:
         raise IOError(f"No cached data files were found in {CACHE}.")
     logger.debug("Pre-processed cache file exists. Loaded cached data.")
@@ -572,6 +558,7 @@ except Exception as ex:
 # Split the graph form into truss and corrugations
 _DATA_MOD = {"truss": {}, "corrugation": {}, "walledtpms": {}}
 _SURROGATE_MOD = {"truss": {}, "corrugation": {}, "walledtpms": {}}
+_IMAGE_MOD = {"truss": {}, "corrugation": {}, "walledtpms": {}}
 for form, unitcells in _DATA.items():
     for unitcell in unitcells.keys():
         if "honeycomb" in unitcell:
@@ -582,10 +569,13 @@ for form, unitcells in _DATA.items():
             new = form
         _DATA_MOD[new][unitcell] = _DATA[form][unitcell]
         _SURROGATE_MOD[new][unitcell] = _SURROGATE[form][unitcell]
+        _IMAGE_MOD[new][unitcell] = _IMAGE[form][unitcell]
 _DATA = _DATA_MOD
 _SURROGATE = _SURROGATE_MOD
+_IMAGE = _IMAGE_MOD
 del _DATA_MOD
 del _SURROGATE_MOD
+del _IMAGE_MOD
 
 # # Replace all custom _SURROGATE models with a modified definition
 # for param in [f"custom{ind+1}" for ind in range(NCUSTOM)]:
@@ -624,7 +614,7 @@ def SURROGATE(scustom, form, unitcell):
 
     # surrogate = copy(_SURROGATE)
     logger.info(f"Loading surrogate model for {unitcell} ({form})")
-    surrogate = _SURROGATE[form][unitcell]()['surrogate']
+    surrogate = _SURROGATE[form][unitcell]()
     for param, model in zip([f"custom{ind+1}" for ind in range(NCUSTOM)], custom):
         # Store a different unity definition for the custom fields
         surrogate[param] = {
@@ -645,12 +635,14 @@ _BOUNDS_DEFAULT = [0.9, 1.1]
 _BOUNDS = pd.DataFrame(np.ones((2, NSTANDARD)), columns=STANDARD)
 _BOUNDS.iloc[0, :] *= 1e10
 _BOUNDS.iloc[1, :] *= -1e10
-IMAGES = {}
+IMAGES = _IMAGE
+# IMAGES = {}
 for k in _DATA.keys():
-    IMAGES[k] = {}
+    # IMAGES[k] = {}
     for subk in _DATA[k].keys():
         # Store the images
-        IMAGES[k][subk] = [r[-1] for r in _DATA[k][subk]]
+        # IMAGES[k][subk] = [r[-1] for r in _DATA[k][subk]]
+
 
         # Store data
         _DATA[k][subk] = pd.DataFrame(
@@ -943,11 +935,11 @@ def _createCard(column):
                         values["relativeDensity"] < 0.15,
                     )
                 )
-                image = IMAGES[form][kind][np.argmax(inds)]
+                image = IMAGES[form][kind]()[np.argmax(inds)]
             except:
                 # If there were issues getting an image, just use the
                 # first in the list
-                image = IMAGES[form][kind][0]
+                image = IMAGES[form][kind]()[0]
 
             # Define a human readable name for the unitcell form
             if form == "walledtpms":
@@ -1424,11 +1416,11 @@ for kind, values in _DATA[form].items():
                 values["relativeDensity"] < 0.15,
             )
         )
-        image = IMAGES[form][kind][np.argmax(inds)]
+        image = IMAGES[form][kind]()[np.argmax(inds)]
     except:
         # If there were issues getting an image, just use the
         # first in the list
-        image = IMAGES[form][kind][0]
+        image = IMAGES[form][kind]()[0]
 
     # Create a custom label that includes an image of the unitcell
     value = f"{kind}"
@@ -1468,11 +1460,11 @@ for form in forms:
                     values["relativeDensity"] < 0.15,
                 )
             )
-            image = IMAGES[form][kind][np.argmax(inds)]
+            image = IMAGES[form][kind]()[np.argmax(inds)]
         except:
             # If there were issues getting an image, just use the
             # first in the list
-            image = IMAGES[form][kind][0]
+            image = IMAGES[form][kind]()[0]
 
         # Create a custom label that includes an image of the unitcell
         value = f"{kind}"

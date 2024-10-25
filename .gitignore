@@ -1,5 +1,6 @@
 *.log
 Database/*
+**/images/*
 *.pyc
 unitcell.egg*
 *.ipynb_checkpoints*
@@ -8,6 +9,7 @@ unitcell.egg*
 config.json
 .venv/
 .conda/
+*.bak
 
 # Ignore UnitcellApp distribution files
 dist/*
