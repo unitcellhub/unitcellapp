@@ -1684,7 +1684,10 @@ def updateSelectedComparison(selected, scustom, scurves, sdata):
 def updateAlertThicknessColor(thickness, marksT, sdata, unitcellForm):
     try:
         # Parse the unitcell type and form
-        split1 = unitcellForm.split(" (")
+        if unitcellForm:
+            split1 = unitcellForm.split(" (")
+        else:
+            return None, False
         unitcell = split1[0]
         form = split1[1][:-1].replace(" ", "").lower()
         try:

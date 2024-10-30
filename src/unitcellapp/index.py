@@ -24,13 +24,10 @@ def debug() -> None:
     app.run_server(debug=True, port=port)
 
 # Run with waitress locally
-def waitress() -> None:
+def production() -> None:
     """ Run unitcellapp in a production style WSGI """
+    from waitress import serve
     # Determine the number of allowable threads to use
-    # @NOTE: Due to an issue with pyinstaller and the multiprocessing module
-    # (see https://pyinstaller.org/en/stable/common-issues-and-pitfalls.html#multi-processing
-    # for more details), the os module is used here instead.
-
     import multiprocessing
     threads = multiprocessing.cpu_count()
     if threads is None:
