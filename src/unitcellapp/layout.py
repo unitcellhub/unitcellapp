@@ -16,9 +16,16 @@ import logging
 from copy import copy
 import json
 from functools import partial
-
 # Setup logger
 logger = logging.getLogger("unitcellapp")
+
+try:
+    # Try to load the current version of unitcellapp from the dynamically created about.py file. This versioning is created dynamically when the pyproject is build.
+    from about import version
+    logger.info(f"Running UnitcellApp {version}")
+except ModuleNotFoundError:
+    logger.info("Unable to find the about.py file with the UnitcellApp version details. Generate this file by building UnitcellApp (with pip for a more advanced package manager like uv or poetry.)")
+    version = None
 
 
 # def augpow(x, exp=1):
@@ -2033,9 +2040,8 @@ layout = dbc.Container(
         html.Hr(),
         html.Footer(
             [
-                (
-                    "© 2024 UnitcellHub team. All rights reserved."
-                ),
+                html.Div(["© 2024 ", html.A("UnitcellHub", href="https://www.github.com/unitcellhub"), " team. All rights reserved. "]),
+                f"{version}",
             ]
         ),
         html.Br(),
