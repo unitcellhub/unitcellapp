@@ -3,7 +3,8 @@
 **/.git
 **/__pycache__
 *.bak
-README.md
+build/
+dist/
 electron/
 electron.bat
 pyinstaller.bat
