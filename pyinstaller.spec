@@ -10,14 +10,17 @@ block_cipher = None
 import dash
 from pathlib import Path
 sitepackages = Path(dash.__path__[0]).parent
+env = sitepackages.parent.parent
 
 # Make sure to add all of the necessary supporting data and packages
 # that aren't automatically found py pyinstaller
 added_files = [
-    ('dashboard/database_*.pkl', 'dashboard'),
-    ('dashboard/assets/*', 'dashboard/assets'),
-    ('dashboard/static/examples/*', 'dashboard/static/examples'),
-    ((sitepackages / Path('unitcell/geometry/definitions')).as_posix() + '/*', 'unitcell/geometry/definitions'),
+    # ('src/', 'unitcellapp/'),
+    ((Path('about.py')).as_posix(), 'unitcellapp/about.py'),
+    ((Path('src/unitcellapp/assets')).as_posix(), 'unitcellapp/assets'),
+    ((Path('src/unitcellapp/cache')).as_posix(), 'unitcellapp/cache'),
+    ((Path('src/unitcellapp/static/examples')).as_posix(), 'unitcellapp/static/examples'),
+    ((sitepackages / Path('unitcellengine/geometry/definitions')).as_posix() + '/*', 'unitcellengine/geometry/definitions'),
     # ((sitepackages / Path('dash')).as_posix(), 'dash'),
     # ((sitepackages / Path('dash_bootstrap_components')).as_posix(), 'dash_bootstrap_components'),
     ((sitepackages / Path('dash_core_components')).as_posix(), 'dash_core_components'),
@@ -30,9 +33,12 @@ added_files = [
 # @TODO: The curren binary addition of blosc2 for tables is a fragile patch for Windows systems.
 # This implementation likely won't work for *nix based systems. It also requires you to have
 # a virtual environment setup in .venv. This needs to be made more robust in the future.
-a = Analysis(['unitcellapp.py'],
+a = Analysis(['pyinstaller/main.py'],
              pathex=[],
-             binaries=[(Path(".venv/bin/libblosc2.dll").as_posix(), "tables")],
+             binaries=\
+                [(env / Path("bin/libblosc*.dll").as_posix(), "tables")], # +\
+                # [(sitepackages / Path(tables.libs).as_posix(), "tables.libs")] +\
+                # [(env / Path("Library/bin/mkl*").as_posix(), "Library/bin")],
              datas=added_files,
              hiddenimports=['cftime', 'cftime._strptime',
                             'vtkmodules', 'vtkmodules.all', 
@@ -40,7 +46,7 @@ a = Analysis(['unitcellapp.py'],
                             'vtkmodules.numpy_interface', 
                             'vtkmodules.numpy_interface.dataset_adapter',
                             'dash', 'dash_bootstrap_components',
-                            'waitress', 'tables'],
+                            'waitress', 'tables', ],
              hookspath=[],
              hooksconfig={},
              runtime_hooks=[],

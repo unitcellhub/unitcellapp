@@ -1,4 +1,4 @@
-from unitcellengine.analysis.homogenization import Ei, Ki, Gij, nuij
+from unitcellengine.analysis.material import Ei, Ki, Gij, nuij
 import json
 from copy import copy
 

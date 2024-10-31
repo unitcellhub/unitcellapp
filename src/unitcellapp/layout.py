@@ -2,7 +2,7 @@ from dash import dcc, html
 import dash_bootstrap_components as dbc
 from unitcellapp.cache import CACHE, cacheLoad
 from unitcellengine.geometry.sdf import SDFGeometry
-from unitcellengine.analysis.homogenization import Ei, Ki, Gij, nuij
+from unitcellengine.analysis.material import Ei, Ki, Gij, nuij
 from unitcellapp.options import OPTIONS, OPTIONS_NORMALIZE, _OPTIONS, _DEFAULT_OPTIONS, NCUSTOM
 import numpy as np
 import pandas as pd
@@ -24,8 +24,12 @@ try:
     from about import version
     logger.info(f"Running UnitcellApp {version}")
 except ModuleNotFoundError:
-    logger.info("Unable to find the about.py file with the UnitcellApp version details. Generate this file by building UnitcellApp (with pip for a more advanced package manager like uv or poetry.)")
-    version = None
+    try:
+        from unitcellapp.about import version
+        logger.info(f"Running UnitcellApp {version}")
+    except ModuleNotFoundError:
+        logger.info("Unable to find the about.py file with the UnitcellApp version details. Generate this file by building UnitcellApp (with pip for a more advanced package manager like uv or poetry.)")
+        version = ""
 
 
 # def augpow(x, exp=1):
@@ -2039,10 +2043,15 @@ layout = dbc.Container(
         html.Br(),
         html.Hr(),
         html.Footer(
-            [
-                html.Div(["© 2024 ", html.A("UnitcellHub", href="https://www.github.com/unitcellhub"), " team. All rights reserved. "]),
-                f"{version}",
-            ]
+            dbc.Stack(
+                [
+                    html.Div(["© 2024 ", html.A("UnitcellHub", href="https://www.github.com/unitcellhub"), " team. All rights reserved. "]),
+                    html.Div("", className="mx-auto"),
+                    html.Div([f"{version}"]),
+                ],
+                direction="horizontal",
+                gap=3,
+            ),
         ),
         html.Br(),
     ],

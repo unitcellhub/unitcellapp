@@ -180,8 +180,6 @@ def cacheCreate(database: Path|str|None=None, kinds: List[str]=["data", "images"
                 )
             except:
                 # Cache data loaded
-
-                print(np.array(_DATA[form][unitcell]).shape, len(columns))
                 df = pd.DataFrame(
                     np.array(_DATA[form][unitcell]), columns=columns
                 )

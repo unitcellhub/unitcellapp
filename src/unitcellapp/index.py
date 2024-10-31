@@ -3,7 +3,6 @@ from unitcellapp.app import app, port
 from unitcellapp.layout import layout
 import unitcellapp.callbacks
 
-
 logging.basicConfig()
 logger = logging.getLogger("unitcellapp")
 logger.setLevel(logging.WARNING)
