@@ -63,19 +63,22 @@ ENV UV_LINK_MODE=copy
 ENV SETUPTOOLS_SCM_PRETEND_VERSION=0.0.0
 
 # Install the project's dependencies using the lockfile and settings
+# Note, ideally you would run the uv command with the --no-dev option
+# as well; however, there is a bug in the Dash pyproject that doesn't
+# include all of the necessary packages in the no-dev dependencies.
+# So, for now, all of the dev dependencies are included.
 RUN --mount=type=cache,target=/root/.cache/uv \
     --mount=type=bind,source=uv.lock,target=uv.lock \
     --mount=type=bind,source=pyproject.toml,target=pyproject.toml \
-    --mount=type=bind,source=LICENSE,target=LICENSE \
-    --mount=type=bind,source=README.md,target=README.md \
-    uv sync --frozen --no-install-project --no-dev 
+    uv sync --frozen --no-install-project 
 
 # Then, add the rest of the project source code and install it
 # Installing separately from its dependencies allows optimal layer caching
-# ADD . /app
-COPY ./src /app/src
+ADD . /app
 RUN --mount=type=cache,target=/root/.cache/uv \
-    uv sync --frozen --no-dev
+    --mount=type=bind,source=pyproject.toml,target=pyproject.toml \
+    --mount=type=bind,source=uv.lock,target=uv.lock \
+    uv sync --frozen
 
 # Place executables in the environment at the front of the path
 ENV PATH="/app/.venv/bin:$PATH"

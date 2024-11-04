@@ -61,10 +61,10 @@ To start the web server, a WSGI HTTP server like gunicorn is required.
 
 The Docker method acts as a more generalizable deployment mechanism.
 To use this option, first install [docker](https://www.docker.com/).
-Once installed, the current release of *UnitcellApp* can be pulled from [DockerHub](https://hub.docker.com/) by running
+Once installed, the current release of *UnitcellApp* can be pulled from Github's docker registry ghcr.io by running
 
 ```
-docker pull unitcellhub/unitcell:latest
+docker pull ghcr.io/unitcellhub/unitcell:latest
 ```
 
 If a custom docker image is desired, first clone the respository, make the desired modifications, and then run the following
@@ -92,16 +92,17 @@ and then access *UnitcellApp* in your preferred browser at http://127.0.0.1:5030
 
 *UnitcellApp* can be wrapped by Electron to create a desktop application.
 As the backbone features are built upon Python, this requires some initial setup to create the binaries required by Electron.
-To do so, open a command line and run
+To create the executable, first install the UV python packaging utility as found at https://docs.astral.sh/uv/getting-started/installation/.  
+Then, run
 
 ```
 pyinstaller.bat
 ```
 
-which can take 5-20 minutes to run.
+which can take 2-10 minutes to run.
 This batch files runs pyinstaller to create an executable version of *UnitcellApp*, which is placed in the folder "dist/unitcellapp/unitcellapp.exe" 
 Due to limitations with pyinstaller, this is a somewhat unstable process.
-It have been verified to work on Windows.
+It has been verified to work on Windows.
 It can likely be generalized to Mac and Linux, but hasn't been completed successfully to-date.
 
 Next, make the Electron app by running
@@ -110,7 +111,7 @@ Next, make the Electron app by running
 electron.bat
 ```
 
-which can take 5-30 minutes to run.
+which can take 2-10 minutes to run.
 Once complete, the Windows installer can be found in "electron/dist/UnitcellApp Setup X.X.X.exe" (where the Xs denote the current version number).
 Note that this is currently the least stable deployment mechanism.
 

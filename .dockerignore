@@ -1,13 +1,18 @@
 **/.dockerignore
-**/.env
-**/.git
-**/__pycache__
-*.bak
+**/.env/
+**/.git/
+**/__pycache__/
+**/.venv/
+**/.conda/
+**/*.bak
+**/*.h5
+database/
 build/
 dist/
+pyinstaller/
 electron/
 electron.bat
 pyinstaller.bat
-unitcellapp.spec
-unitcellapp.py
+pyinstaller.spec
+
 
