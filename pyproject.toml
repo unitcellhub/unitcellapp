@@ -46,7 +46,7 @@ cache = "unitcellapp.cache:cacheCreate"
 source = "vcs"
 
 [tool.hatch.build.hooks.vcs]
-version-file = "about.py"
+version-file = "src/unitcellapp/_version.py"
 
 [tool.uv.sources]
 sdf = { git = "https://github.com/fogleman/sdf.git" , rev = "main" }

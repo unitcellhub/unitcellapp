@@ -1,36 +1,30 @@
-from dash import dcc, html
-import dash_bootstrap_components as dbc
-from unitcellapp.cache import CACHE, cacheLoad
-from unitcellengine.geometry.sdf import SDFGeometry
-from unitcellengine.analysis.material import Ei, Ki, Gij, nuij
-from unitcellapp.options import OPTIONS, OPTIONS_NORMALIZE, _OPTIONS, _DEFAULT_OPTIONS, NCUSTOM
-import numpy as np
-import pandas as pd
-import dill as pickle
 import base64
 import io
-import os
-from PIL import Image
-from pathlib import Path
-import logging
-from copy import copy
 import json
+import logging
+import os
+from copy import copy
 from functools import partial
+from pathlib import Path
+
+import dash_bootstrap_components as dbc
+import dill as pickle
+import numpy as np
+import pandas as pd
+from dash import dcc, html
+from PIL import Image
+from unitcellengine.analysis.material import Ei, Gij, Ki, nuij
+from unitcellengine.geometry.sdf import SDFGeometry
+
+import unitcellapp
+from unitcellapp.cache import CACHE, cacheLoad
+from unitcellapp.options import (_DEFAULT_OPTIONS, _OPTIONS, NCUSTOM, OPTIONS,
+                                 OPTIONS_NORMALIZE)
+
+version = unitcellapp.__version__
+
 # Setup logger
 logger = logging.getLogger("unitcellapp")
-
-try:
-    # Try to load the current version of unitcellapp from the dynamically created about.py file. This versioning is created dynamically when the pyproject is build.
-    from about import version
-    logger.info(f"Running UnitcellApp {version}")
-except ModuleNotFoundError:
-    try:
-        from unitcellapp.about import version
-        logger.info(f"Running UnitcellApp {version}")
-    except ModuleNotFoundError:
-        logger.info("Unable to find the about.py file with the UnitcellApp version details. Generate this file by building UnitcellApp (with pip for a more advanced package manager like uv or poetry.)")
-        version = ""
-
 
 # def augpow(x, exp=1):
 #     return pow(x, exp)
@@ -61,13 +55,17 @@ for cache in CACHE.glob("data_*.pkl"):
         _DATA[form][unitcell] = _data
         # In old version of the cache files, there are custom fields were
         # stored and we don't want to maintain them.
-        _SURROGATE[form][unitcell] = partial(cacheLoad, kind="surrogates", form=form, unitcell=unitcell) 
-        _IMAGE[form][unitcell] = partial(cacheLoad, kind="images", form=form, unitcell=unitcell) 
+        _SURROGATE[form][unitcell] = partial(
+            cacheLoad, kind="surrogates", form=form, unitcell=unitcell
+        )
+        _IMAGE[form][unitcell] = partial(
+            cacheLoad, kind="images", form=form, unitcell=unitcell
+        )
         # _SURROGATE[form][unitcell] = {
         #     k: v for k, v in tmp["surrogate"].items() if "custom" not in k
         # }
     except KeyError:
-        # Initialize dictionaries as they don't exist yet 
+        # Initialize dictionaries as they don't exist yet
         _DATA[form] = {}
         _SURROGATE[form] = {}
         _IMAGE[form] = {}
@@ -76,15 +74,21 @@ for cache in CACHE.glob("data_*.pkl"):
         _DATA[form][unitcell] = _data
 
         # Store loader functions
-        _SURROGATE[form][unitcell] = partial(cacheLoad, kind="surrogates", form=form, unitcell=unitcell) 
-        _IMAGE[form][unitcell] = partial(cacheLoad, kind="images", form=form, unitcell=unitcell) 
+        _SURROGATE[form][unitcell] = partial(
+            cacheLoad, kind="surrogates", form=form, unitcell=unitcell
+        )
+        _IMAGE[form][unitcell] = partial(
+            cacheLoad, kind="images", form=form, unitcell=unitcell
+        )
 if not _DATA or not _SURROGATE or not _IMAGE:
-    raise IOError(f"No cached data files were found in {CACHE}. "
-                  "Download the UnitcellDB database from github.com/unitcellhub/unitcelldb "
-                  "and place the 'unitcelldb.h5' folder in the folder 'database' at the root "
-                  "of the UnitcellApp repository. Then, run the *createCache* method in the "
-                  "unitcellapp.cache module to generate the required cache files."
-                  "Run the *cacheCreate* method to generate the required cache files.")
+    raise IOError(
+        f"No cached data files were found in {CACHE}. "
+        "Download the UnitcellDB database from github.com/unitcellhub/unitcelldb "
+        "and place the 'unitcelldb.h5' folder in the folder 'database' at the root "
+        "of the UnitcellApp repository. Then, run the *createCache* method in the "
+        "unitcellapp.cache module to generate the required cache files."
+        "Run the *cacheCreate* method to generate the required cache files."
+    )
 logger.debug("Pre-processed cache file exists. Loaded cached data.")
 
 # Split the graph form into truss and corrugations
@@ -176,7 +180,6 @@ for k in _DATA.keys():
     for subk in _DATA[k].keys():
         # Store the images
         # IMAGES[k][subk] = [r[-1] for r in _DATA[k][subk]]
-
 
         # Store data
         _DATA[k][subk] = pd.DataFrame(
@@ -2045,9 +2048,17 @@ layout = dbc.Container(
         html.Footer(
             dbc.Stack(
                 [
-                    html.Div(["© 2024 ", html.A("UnitcellHub", href="https://www.github.com/unitcellhub"), " team. All rights reserved. "]),
+                    html.Div(
+                        [
+                            "© 2024 ",
+                            html.A(
+                                "UnitcellHub", href="https://www.github.com/unitcellhub"
+                            ),
+                            " team. All rights reserved. ",
+                        ]
+                    ),
                     html.Div("", className="mx-auto"),
-                    html.Div([f"{version}"]),
+                    html.Div([f"{'' if 'Unknown' in version else 'v' + version}"]),
                 ],
                 direction="horizontal",
                 gap=3,
@@ -2057,4 +2068,3 @@ layout = dbc.Container(
     ],
     className="dbc",
 )
-

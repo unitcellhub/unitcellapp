@@ -16,7 +16,7 @@ env = sitepackages.parent.parent
 # that aren't automatically found py pyinstaller
 added_files = [
     # ('src/', 'unitcellapp/'),
-    ((Path('about.py')).as_posix(), 'unitcellapp/about.py'),
+    # ((Path('src/unitcellapp/_version.py')).as_posix(), 'unitcellapp/about.py'),
     ((Path('src/unitcellapp/assets')).as_posix(), 'unitcellapp/assets'),
     ((Path('src/unitcellapp/cache')).as_posix(), 'unitcellapp/cache'),
     ((Path('src/unitcellapp/static/examples')).as_posix(), 'unitcellapp/static/examples'),
