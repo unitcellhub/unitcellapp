@@ -21,6 +21,6 @@ electron/package-lock.json
 electron/out/*
 node_modules/*
 electron/dist/*
-yarn.lock
+# yarn.lock
 
 
