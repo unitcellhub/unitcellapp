@@ -1,72 +1,77 @@
 {
-  "name": "unitcellapp",
-  "version": "0.0.6",
-  "description": "Design and select lattice unitcells based on a given application.",
-  "main": "main.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "compile": "electron-webpack",
-    "pack": "electron-builder --dir",
-    "dist": "yarn compile && electron-builder",
-    "start": "electron ."
-  },
-  "keywords": [
-    "unitcell",
-    "lattice",
-    "design"
-  ],
-  "author": "Ryan Watkins",
-  "license": "MIT",
-  "devDependencies": {
-    "@electron/asar": "^3.2.1",
-    "copy-webpack-plugin": "^12.0.2",
-    "electron": "^21.1.0",
-    "electron-builder": "^23.6.0",
-    "electron-webpack": "^2.8.2",
-    "webpack": "^5.75.0"
-  },
-  "dependencies": {
-    "electron-log": "^4.4.8",
-    "ps-tree": "^1.2.0",
-    "source-map-support": "^0.5.21"
-  },
-  "electronWebpack": {
-    "main": {
-      "sourceDirectory": "."
+    "name": "unitcellapp",
+    "version": "0.0.8-d20241104",
+    "description": "Design and select lattice unitcells based on a given application.",
+    "main": "main.js",
+    "scripts": {
+        "compile": "uv run version.py && electron-webpack",
+        "pack": "yarn compile && electron-builder --dir",
+        "dist": "yarn compile && electron-builder",
+        "debug": "electron ."
     },
-    "renderer": {
-      "sourceDirectory": null
-    }
-  },
-  "build": {
-    "appId": "com.electron.unitcellapp",
-    "productName": "UnitcellApp",
-    "copyright": "© 2022 California Institute of Technology",
-    "asar": true,
-    "win": {
-      "target": "NSIS",
-      "icon": "assets/icon.ico"
-    },
-    "files": [
-      "**/*",
-      "!**/node_modules/*/{CHANGELOG.md,README.md,README,readme.md,readme}",
-      "!**/node_modules/*/{test,__tests__,tests,powered-test,example,examples}",
-      "!**/node_modules/*.d.ts",
-      "!**/node_modules/.bin",
-      "!**/*.{iml,o,hprof,orig,pyc,pyo,rbc,swp,csproj,sln,xproj}",
-      "!.editorconfig",
-      "!**/._*",
-      "!**/{.DS_Store,.git,.hg,.svn,CVS,RCS,SCCS,.gitignore,.gitattributes}",
-      "!**/{__pycache__,thumbs.db,.flowconfig,.idea,.vs,.nyc_output}",
-      "!**/{appveyor.yml,.travis.yml,circle.yml}",
-      "!**/{npm-debug.log,yarn.lock,.yarn-integrity,.yarn-metadata.json}"
+    "keywords": [
+        "unitcell",
+        "lattice",
+        "design",
+        "unitcellhub"
     ],
-    "extraResources": [
-      {
-        "from": "../dist/",
-        "to": "dist/",
-        "filter": "**/*"
-      }
-    ]
-  }
+    "author": "Ryan Watkins",
+    "license": "Apache License 2.0",
+    "devDependencies": {
+        "@electron/asar": "^3.2.1",
+        "copy-webpack-plugin": "^12.0.2",
+        "electron": "^21.1.0",
+        "electron-builder": "^25.1.8",
+        "electron-webpack": "^2.8.2",
+        "webpack": "^5.75.0"
+    },
+    "dependencies": {
+        "electron-log": "^4.4.8",
+        "ps-tree": "^1.2.0",
+        "source-map-support": "^0.5.21"
+    },
+    "electronWebpack": {
+        "main": {
+            "sourceDirectory": "."
+        },
+        "renderer": {
+            "sourceDirectory": null
+        }
+    },
+    "build": {
+        "appId": "com.electron.unitcellapp",
+        "productName": "UnitcellApp",
+        "copyright": "\u00c2\u00a9 2024 UnitcellHub",
+        "asar": true,
+        "win": {
+            "target": "NSIS",
+            "icon": "assets/icon.ico"
+        },
+        "nsis": {
+            "oneClick": true,
+            "runAfterFinish": true,
+            "shortcutName": "UnitcellApp"
+        },
+        "files": [
+            "**/*",
+            "!**/node_modules/*/{CHANGELOG.md,README.md,README,readme.md,readme}",
+            "!**/node_modules/*/{test,__tests__,tests,powered-test,example,examples}",
+            "!**/node_modules/*.d.ts",
+            "!**/node_modules/.bin",
+            "!**/*.{iml,o,hprof,orig,pyc,pyo,rbc,swp,csproj,sln,xproj}",
+            "!.editorconfig",
+            "!**/._*",
+            "!**/{.DS_Store,.git,.hg,.svn,CVS,RCS,SCCS,.gitignore,.gitattributes}",
+            "!**/{__pycache__,thumbs.db,.flowconfig,.idea,.vs,.nyc_output}",
+            "!**/{appveyor.yml,.travis.yml,circle.yml}",
+            "!**/{npm-debug.log,yarn.lock,.yarn-integrity,.yarn-metadata.json}"
+        ],
+        "extraResources": [
+            {
+                "from": "../dist/unitcellapp/",
+                "to": "dist/unitcellapp/",
+                "filter": "**/*"
+            }
+        ]
+    }
 }
