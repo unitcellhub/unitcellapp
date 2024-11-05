@@ -81,8 +81,8 @@ jobs:
           files: "UnitcellApp Setup*.exe"
           working-directory: ./electron/dist
           match-directories: false
-          match-gitignore-files: true
-          files-separator: ' '
+          # match-gitignore-files: true
+          # files-separator: ' '
 
       - name: Show all matching files
         run: |
