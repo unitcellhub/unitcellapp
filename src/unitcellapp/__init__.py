@@ -1,4 +1,1 @@
-try:
-    from ._version import __version__
-except ImportError:
-    __version__ = "Unknown"
+__version__ = version = "0.0.7"
