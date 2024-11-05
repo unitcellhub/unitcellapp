@@ -42,11 +42,15 @@ debug = "unitcellapp.index:debug"
 production = "unitcellapp.index:production"
 cache = "unitcellapp.cache:cacheCreate"
 
-[tool.hatch.version]
-source = "vcs"
 
-[tool.hatch.build.hooks.vcs]
-version-file = "src/unitcellapp/_version.py"
+[tool.bumpversion.files]
+filename = "src/unitcellapp/_version.py"
+
+# [tool.hatch.version]
+# source = "vcs"
+# 
+# [tool.hatch.build.hooks.vcs]
+# version-file = "src/unitcellapp/_version.py"
 
 [tool.uv.sources]
 sdf = { git = "https://github.com/fogleman/sdf.git" , rev = "main" }
