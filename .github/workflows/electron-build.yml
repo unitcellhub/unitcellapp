@@ -57,11 +57,10 @@ jobs:
       - name: Build pyinstaller executable
         run: uv run --no-sync pyinstaller --noconfirm pyinstaller.spec
 
-      - name: Set Node.js 16.x
+      - name: Set Node.js 
         uses: actions/setup-node@v3
         with:
-          node-version: 16.x
-          working-directory: .\electron
+          node-version: 20.x
 
       - name: Install electron environment from lock file
         run: yarn install --frozen-lockfile
