@@ -16,6 +16,8 @@ on:
   pull_request:
     branches: [ "main" ]
 
+env:
+  ASSET_FILNAME: ${{ github.ref_name }} 
 
 jobs:
   build:
@@ -69,6 +71,31 @@ jobs:
       - name: Build electron executable
         run: yarn run dist 
         working-directory: .\electron
+
+      - name: Glob match executable filename
+        uses: tj-actions/glob@v22
+        id: glob
+        with:
+          files: "UnitcellApp Setup*.exe"
+          working-directory: ./electron/dist
+
+      - name: Get release details
+        if: github.event_name == 'release'
+        id: get_release
+        uses: bruceadams/get-release@v1.3.2
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+
+      - name: Upload release asset
+        if: github.event_name == 'release'
+        uses: actions/upload-release-asset@v1.0.2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.get_release.outputs.upload_url }} 
+          asset_path: .\electron\dist\
+          asset_name: ${{ steps.glob.output.paths }} 
+          asset_content_type: application/exe
 
 
 
