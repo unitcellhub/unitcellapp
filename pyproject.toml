@@ -61,8 +61,8 @@ commit_args = ""
 
 [[tool.bumpversion.files]]
 filename = "src/unitcellapp/__init__.py"
-search = "__version__ = version = \"{current_version}\""
-replace =  "__version__ = version = \"{new_version}\""
+search = "version = \"{current_version}\""
+replace =  "version = \"{new_version}\""
 
 [[tool.bumpversion.files]]
 filename = "electron/package.json"
