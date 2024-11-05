@@ -1,6 +1,7 @@
 [project]
 name = "unitcellapp"
 description = "Lattice unitcell geometry and analysis framework"
+version = "0.0.7"
 readme = "README.md"
 requires-python = ">=3.10, <3.12"
 license = {file = "LICENSE"}
@@ -28,9 +29,6 @@ dependencies = [
     "unitcellengine>=0.0.4",
     "vtk>=9.3.1",
     "waitress>=3.0.0",
-]
-dynamic = [
-    "version",
 ]
 
 [project.urls]
@@ -86,7 +84,7 @@ replace = "version = \"{new_version}\""
 sdf = { git = "https://github.com/fogleman/sdf.git" , rev = "main" }
 
 [build-system]
-requires = ["hatchling", "hatch-vcs"]
+requires = ["hatchling"]
 build-backend = "hatchling.build"   
 
 [dependency-groups]
