@@ -1,0 +1,76 @@
+name: Electron
+
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+
+on:
+  workflow_dispatch:
+  # schedule:
+  #   - cron: '20 21 * * *'
+  push:
+    branches: [ "main", "develop" ]
+    # Publish semver tags as releases.
+    tags: [ 'v*' ]
+  pull_request:
+    branches: [ "main" ]
+
+
+jobs:
+  build:
+
+    runs-on: windows-latest
+    permissions:
+      contents: read
+      packages: write
+      # This is used to complete the identity challenge
+      # with sigstore/fulcio when running outside of PRs.
+      id-token: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          # This repository uses git-lfs, so we need to enable support.
+          # Otherwise, the lfs files won't be properly pulled.
+          lfs: true
+
+      - name: Pull from git lfs
+        run: git lfs pull
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v3
+        with:
+          version: "0.4.4"
+          # enable-cache: true
+          # cache-dependency-glob: "uv.lock"
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version-file: ".python-version"
+
+      - name: Install the project from lock file 
+        run: uv sync --frozen --dev --all-extras
+
+      - name: Build pyinstaller executable
+        run: uv run --no-sync pyinstaller --noconfirm pyinstaller.spec
+
+      - name: Set Node.js 16.x
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16.x
+          working-directory: .\electron
+
+      - name: Install electron environment from lock file
+        run: yarn install --frozen-lockfile
+        working-directory: .\electron
+
+      - name: Build electron executable
+        run: yarn run dist 
+        working-directory: .\electron
+
+
+
+
