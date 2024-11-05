@@ -43,6 +43,9 @@
 # Use a Python image with uv pre-installed
 FROM ghcr.io/astral-sh/uv:python3.10-bookworm-slim
 
+# To make the images visable on github, the image needs to be labeled
+LABEL org.opencontainers.image.source="https://github.com/unitcellhub/unitcellapp"
+
 # Since some of the packages don't have pip wheels, they need to be
 # installed from git. To do so, we need to install git.
 # Additionally, some of the visualization libraries require libgl
