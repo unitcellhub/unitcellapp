@@ -100,7 +100,7 @@ jobs:
 
       - name: Create tagged release 
         if: github.event_name == 'tag'
-        uses: marvinpinto/action-automatic-releases@v1
+        uses: marvinpinto/action-automatic-releases@latest #@TODO A specific version should be specified here, rather than latest.
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
           prerelease: false
