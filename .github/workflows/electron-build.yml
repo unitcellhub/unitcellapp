@@ -6,25 +6,23 @@ name: Electron
 # documentation.
 
 on:
-  workflow_dispatch:
-  # schedule:
-  #   - cron: '20 21 * * *'
   push:
     branches: [ "main", "develop" ]
     # Publish semver tags as releases.
     tags: [ 'v*' ]
   pull_request:
     branches: [ "main" ]
-  release:
-    types: [published]
 
 env:
   ASSET_FILNAME: ${{ github.ref_name }} 
 
 jobs:
   build:
-
-    runs-on: windows-latest
+    name: Build binary executable on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [windows-latest]
     permissions:
       contents: read
       packages: write
@@ -74,38 +72,40 @@ jobs:
         run: yarn run dist 
         working-directory: .\electron
 
-      - name: Glob match executable filename
-        uses: tj-actions/glob@v22
-        id: glob
+      - name: Upload Windows executable
+        if: matrix.os == 'windows-latest'
+        uses: actions/upload-artifact@v4
         with:
-          files: "UnitcellApp Setup*.exe"
-          working-directory: ./electron/dist
-          match-directories: false
-          # match-gitignore-files: true
-          # files-separator: ' '
+          name: artifact-windows
+          path: electron/dist/UnitcellApp*.exe
 
-      - name: Show all matching files
-        run: |
-          echo "${{ steps.glob.outputs.paths }}"
-
-      - name: Get release details
-        if: github.event_name == 'release'
-        id: get_release
-        uses: bruceadams/get-release@v1.3.2
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
-
-      - name: Upload release asset
-        if: github.event_name == 'release'
-        uses: actions/upload-release-asset@v1.0.2
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Upload MacOS executable
+        if: matrix.os == 'macos-latest'
+        uses: actions/upload-artifact@v4
         with:
-          upload_url: ${{ steps.get_release.outputs.upload_url }} 
-          asset_path: .\electron\dist\
-          asset_name: ${{ steps.glob.output.paths }} 
-          asset_content_type: application/exe
+          name: artifact-macos
+          path: electron/dist/UnitcellApp*.dmg
 
+  release:
+    name: Create new release
+    runs-on: ubuntu-latest
+    needs: [build]
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: artifact-*
+          path: ./
+          merge-multiple: true
 
+      - name: Create tagged release 
+        if: github.event_name == 'tag'
+        uses: marvinpinto/action-automatic-releases@v1
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          prerelease: false
+          files: |
+            *.exe
+            *.dmg
 
 
