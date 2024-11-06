@@ -30,6 +30,7 @@ jobs:
       # with sigstore/fulcio when running outside of PRs.
       id-token: write
 
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -89,6 +90,8 @@ jobs:
   release:
     name: Create new release
     runs-on: ubuntu-latest
+    permissions:
+      contents: write # Needed to enable write permissions
     needs: [build]
     steps:
       - name: Download artifacts
@@ -99,13 +102,11 @@ jobs:
           merge-multiple: true
 
       - name: Create tagged release 
-        if: github.event_name == 'tag'
-        uses: marvinpinto/action-automatic-releases@latest #@TODO A specific version should be specified here, rather than latest.
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
         with:
-          repo_token: "${{ secrets.GITHUB_TOKEN }}"
           prerelease: false
           files: |
             *.exe
             *.dmg
-
 
