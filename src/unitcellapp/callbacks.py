@@ -1,11 +1,8 @@
-from unicodedata import unidata_version
-from xml.etree.ElementPath import get_parent_map
 import dash
-from dash import dash_table
 from dash import html, Input, Output, State, MATCH, ALL
 import dash_bootstrap_components as dbc
 from unitcellapp.app import app
-
+from memory_profiler import profile
 from unitcellapp.options import _options, OPTIONS, OPTIONS_NORMALIZE, _DEFAULT_CUSTOM, NCUSTOM
 from unitcellapp.layout import (
     SURROGATE,
@@ -15,7 +12,6 @@ from unitcellapp.layout import (
     columns,
     DATA,
     _DATA,
-    _DATA_DEFAULT,
     IMAGES,
     BLANK_FIGURE,
     FAQ_WALLEDTPMS_OPTIONS,
@@ -24,13 +20,11 @@ from unitcellapp.customeval import customeval
 import json
 import base64
 import numpy as np
-import pandas as pd
 from plotly.colors import DEFAULT_PLOTLY_COLORS
 from plotly.validators.scatter.marker import SymbolValidator
 from plotly import subplots
 from plotly import graph_objects as go
 from itertools import cycle
-from copy import copy
 import textwrap
 import dash_vtk
 from dash_vtk.utils import to_mesh_state
@@ -1109,6 +1103,45 @@ def updateToolTips(hoverData, scurves):
     return True, bbox, children, color, color
 
 
+# Take selection data and update the figure, hiding all other points
+# and labeling them in their selection order
+def _selectionUpdate(fig, selected, curves):
+    # Parse out point data for legend group
+    parsed = {group: [] for group in curves}
+    for i, s in enumerate(selected["points"]):
+        try:
+            parsed[curves[s["curveNumber"]]].append((s["pointNumber"], i))
+        except:
+            parsed[curves[s["curveNumber"]]] = [(s["pointNumber"], i)]
+
+    # Update trace visibility
+    for group, points in parsed.items():
+        logger.debug(f"{group}: {points}")
+
+        # Create point labeling based on selection order
+        if points:
+            # For each point, create an indexing label
+            ps = [p[0] for p in points]
+            text = [""] * (max(ps) + 1)
+            for p in points:
+                text[p[0]] = f"{p[1]+1}"
+        else:
+            # If there are no points selected for this curve,
+            # output blank text and selection arrays
+            text = None
+            ps = []
+
+        # Update traces based on their curve number
+        fig.update_traces(
+            selector=dict(legendgroup=group),
+            selectedpoints=ps,
+            text=text,
+            mode="markers+text",
+            textposition="bottom center",
+        )
+
+    return fig
+
 @app.callback(
     [
         Output("graphAshbyPlots", "figure"),
@@ -1137,6 +1170,8 @@ def updateToolTips(hoverData, scurves):
         State("customData", "data"),
     ],
 )
+
+# @profile
 def updateGraphAshbyPlots(
     values,
     forms,
@@ -1167,7 +1202,7 @@ def updateGraphAshbyPlots(
     except:
         trigger = None
     if trigger is None:
-        dash.no_update, dash.no_update, dash.no_update, dash.no_update
+        return dash.no_update, dash.no_update, dash.no_update, dash.no_update
 
     # If the update corresponds to a custom label that is not
     # currently being plotted, break out early
@@ -1188,17 +1223,17 @@ def updateGraphAshbyPlots(
     # Pull out the current filter bounds
     bounds = {state["id"]["qoi"]: state["value"] for state in ctx.inputs_list[-2]}
     # bounds = {k: v for k, v in zip(columns, filters)}
-
-    # Check for clearing click event (i.e., click event not on a data point)
-    if any(["n_clicks" in t for t in trigger]) and len(trigger) == 1:
-        if selectedDataStored:
-            fig = go.Figure(fig)
-            fig.update_traces(selectedpoints=None, text=None)
-            return fig, dash.no_update, [], dash.no_update
-        else:
-            return dash.no_update, dash.no_update, dash.no_update, dash.no_update
-        # return PreventUpdate
-        # pass
+    #
+    # # Check for clearing click event (i.e., click event not on a data point)
+    # if any(["n_clicks" in t for t in trigger]) and len(trigger) == 1:
+    #     if selectedDataStored:
+    #         fig = go.Figure(fig)
+    #         fig.update_traces(selectedpoints=None, text=None)
+    #         return fig, dash.no_update, [], dash.no_update
+    #     else:
+    #         return dash.no_update, dash.no_update, dash.no_update, dash.no_update
+    #     # return PreventUpdate
+    #     # pass
 
     # Check that there are enough QOI to plot
     N = len(values)
@@ -1219,46 +1254,9 @@ def updateGraphAshbyPlots(
 
     # Extract the current state of the figure curves
     try:
-        CURVES = json.loads(scurves)
+        curves = json.loads(scurves)
     except:
-        CURVES = []
-
-    # Take selection data and update the figure, hiding all other points
-    # and labeling them in their selection order
-    def _selectionUpdate(fig, selected):
-        # Parse out point data for legend group
-        parsed = {group: [] for group in CURVES}
-        for i, s in enumerate(selected["points"]):
-            try:
-                parsed[CURVES[s["curveNumber"]]].append((s["pointNumber"], i))
-            except:
-                parsed[CURVES[s["curveNumber"]]] = [(s["pointNumber"], i)]
-
-        # Update trace visibility
-        for group, points in parsed.items():
-            logger.debug(f"{group}: {points}")
-
-            # Create point labeling based on selection order
-            if points:
-                # For each point, create an indexing label
-                ps = [p[0] for p in points]
-                text = [""] * (max(ps) + 1)
-                for p in points:
-                    text[p[0]] = f"{p[1]+1}"
-            else:
-                # If there are no points selected for this curve,
-                # output blank text and selection arrays
-                text = None
-                ps = []
-
-            # Update traces based on their curve number
-            fig.update_traces(
-                selector=dict(legendgroup=group),
-                selectedpoints=ps,
-                text=text,
-                mode="markers+text",
-                textposition="bottom center",
-            )
+        curves = []
 
     if (
         any(["selected" in t or "click" in t for t in trigger])
@@ -1270,7 +1268,7 @@ def updateGraphAshbyPlots(
         fig = go.Figure(fig)
 
         # Add in text annotations linking each pointed to its score sheet
-        _selectionUpdate(fig, selected)
+        _selectionUpdate(fig, selected, curves)
 
         return fig, dash.no_update, selected, dash.no_update
 
@@ -1282,7 +1280,7 @@ def updateGraphAshbyPlots(
     showlegend = True
 
     # Reset the curves list
-    CURVES = []
+    curves = []
 
     # Get current options, falling back to defaults if custom options haven't
     # been initialized yet.
@@ -1333,7 +1331,7 @@ def updateGraphAshbyPlots(
                     #     f = k
 
                     name = f"{subk} ({k})"
-                    CURVES.append(name)
+                    curves.append(name)
                     color = next(colorcycler)
                     marker = next(markercycler)
 
@@ -1364,9 +1362,13 @@ def updateGraphAshbyPlots(
                     #                               ymin <= y, y <= ymax])
 
                     # logger.debug(inds)
+                    # This sequence was resulting in a significant memory leak.
+                    # Adding in the pandas conversion to numpy seemed to stem the 
+                    # leak, although it still seems to be mildly present.
+                    # https://github.com/pola-rs/polars/issues/18074
                     trace = go.Scattergl(
-                        x=x[inds],
-                        y=y[inds],
+                        x=x[inds].to_numpy(),
+                        y=y[inds].to_numpy(),
                         mode="markers",
                         marker=dict(color=color, symbol=marker),
                         name=name,
@@ -1441,7 +1443,7 @@ def updateGraphAshbyPlots(
     if selected["points"]:
         _selectionUpdate(fig, selected)
 
-    return fig, dash.no_update, selected, json.dumps(CURVES)
+    return fig, dash.no_update, selected, json.dumps(curves)
 
 
 # def _updateSelected(ind, selected, prevChildren, prevSelected, curves):

@@ -3,7 +3,7 @@ import io
 import json
 import logging
 import os
-from copy import copy
+from copy import copy, deepcopy
 from functools import partial
 from pathlib import Path
 
@@ -224,7 +224,7 @@ def BOUNDS(sbounds):
         custom = [_BOUNDS_DEFAULT for _ in range(NCUSTOM)]
 
     # Create full data frame with all bounds
-    bounds = copy(_BOUNDS)
+    bounds = deepcopy(_BOUNDS)
     for i, minmax in enumerate(custom):
         bounds[f"custom{i+1}"] = minmax
 
@@ -269,11 +269,15 @@ def DATA(sdata):
         }
 
     # Combine default and custom values into one dataframe
-    data = copy(_DATA)
+    # Note that we need a deep copy here rather than a shallow
+    # copy since there are mutable global objects within this
+    # dictionary. There was a significant memory leak when 
+    # a shallow copy was used.
+    data = deepcopy(_DATA)
     for form in data.keys():
         for unitcell, df in data[form].items():
             data[form][unitcell] = pd.concat((df, pd.DataFrame(custom[form][unitcell])))
-
+    #
     return data
 
 

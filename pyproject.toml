@@ -91,6 +91,7 @@ build-backend = "hatchling.build"
 dev = [
     "python-dotenv>=1.0.1",
     "pyinstaller>=6.10.0",
+    "memory-profiler>=0.61.0",
 ]
 
 

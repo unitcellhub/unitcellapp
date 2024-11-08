@@ -59,4 +59,5 @@ def production() -> None:
 #
 
 if __name__ == "__main__":
-    debug()
+    # debug()
+    production()
