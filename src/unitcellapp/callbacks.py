@@ -1170,7 +1170,6 @@ def _selectionUpdate(fig, selected, curves):
     [
         State("graphAshbyPlots", "figure"),
         State("selectedData", "data"),
-        State("doubleClick", "data"),
         State("customOptions", "data"),
         State("curves", "data"),
         State("customData", "data"),
@@ -1190,7 +1189,6 @@ def updateGraphAshbyPlots(
     customLabel,
     fig,
     selectedDataStored,
-    doubleClick,
     scustom,
     scurves,
     sdata,
@@ -1228,8 +1226,7 @@ def updateGraphAshbyPlots(
 
     # Pull out the current filter bounds
     bounds = {state["id"]["qoi"]: state["value"] for state in ctx.inputs_list[-2]}
-    # bounds = {k: v for k, v in zip(columns, filters)}
-    #
+
     # Check for clearing click event (i.e., click event not on a data point)
     if any(["n_clicks" in t for t in trigger]) and len(trigger) == 1:
         if selectedDataStored:
@@ -1447,7 +1444,7 @@ def updateGraphAshbyPlots(
 
     # If there are selected points, go through and rehighlight them
     if selected["points"]:
-        _selectionUpdate(fig, selected)
+        _selectionUpdate(fig, selected, curves)
 
     return fig, dash.no_update, selected, json.dumps(curves)
 
