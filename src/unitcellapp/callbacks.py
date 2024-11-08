@@ -1,40 +1,34 @@
-import dash
-from dash import html, Input, Output, State, MATCH, ALL
-import dash_bootstrap_components as dbc
-from unitcellapp.app import app
-from memory_profiler import profile
-from unitcellapp.options import _options, OPTIONS, OPTIONS_NORMALIZE, _DEFAULT_CUSTOM, NCUSTOM
-from unitcellapp.layout import (
-    SURROGATE,
-    _SURROGATE_DEFAULT,
-    BOUNDS,
-    _BOUNDS_DEFAULT,
-    columns,
-    DATA,
-    _DATA,
-    IMAGES,
-    BLANK_FIGURE,
-    FAQ_WALLEDTPMS_OPTIONS,
-)
-from unitcellapp.customeval import customeval
-import json
 import base64
+import json
+import logging
+import re
+import textwrap
+from io import BytesIO
+from itertools import cycle
+from pathlib import Path
+from tokenize import NAME, STRING, tokenize, untokenize
+
+import dash
+import dash_bootstrap_components as dbc
+import dash_vtk
 import numpy as np
+from dash import ALL, MATCH, Input, Output, State, html
+from dash_vtk.utils import to_mesh_state
+from memory_profiler import profile
+from plotly import graph_objects as go
+from plotly import subplots
 from plotly.colors import DEFAULT_PLOTLY_COLORS
 from plotly.validators.scatter.marker import SymbolValidator
-from plotly import subplots
-from plotly import graph_objects as go
-from itertools import cycle
-import textwrap
-import dash_vtk
-from dash_vtk.utils import to_mesh_state
-from unitcellengine.geometry.sdf import SDFGeometry, GRAPH_DEF
-from pathlib import Path
-import logging
-import json
-import re
-from tokenize import tokenize, untokenize, STRING, NAME
-from io import BytesIO
+from unitcellengine.geometry.sdf import GRAPH_DEF, SDFGeometry
+
+from unitcellapp.app import app
+from unitcellapp.customeval import customeval
+from unitcellapp.layout import (_BOUNDS_DEFAULT, _DATA, _SURROGATE_DEFAULT,
+                                BLANK_FIGURE, BOUNDS, DATA,
+                                FAQ_WALLEDTPMS_OPTIONS, IMAGES, SURROGATE,
+                                columns)
+from unitcellapp.options import (_DEFAULT_CUSTOM, NCUSTOM, OPTIONS,
+                                 OPTIONS_NORMALIZE, _options)
 
 # Precompile a regular expression to parse custom variables in a custom equation
 REGEX_CUSTOM_VAR = re.compile("(custom\d+)")
@@ -196,9 +190,14 @@ def _createSubCardProps(unitcell, L, W, H, T, R, form, scustom, ssurrogate):
                 # Assume this is an aspect ratio calculation where the
                 # the equation variables haven't been updated to reference
                 # the data object
-                value = float(customeval(calcs, modeqn.replace("length", "data['length']").replace("width", "data['width']").replace("height", "data['height']")))
-
-
+                value = float(
+                    customeval(
+                        calcs,
+                        modeqn.replace("length", "data['length']")
+                        .replace("width", "data['width']")
+                        .replace("height", "data['height']"),
+                    )
+                )
 
             # logger.debug(f"Evaluation: {value}")
             # value = float(eval(modeqn))
@@ -463,9 +462,11 @@ def updateLoadedEquations(loaded):
 
     # Pull out options
     standard = [
-        ref[f"{id}.value"]
-        if ref[f"{id}.value"] or ref[f"{id}.value"] == 0
-        else dash.no_update
+        (
+            ref[f"{id}.value"]
+            if ref[f"{id}.value"] or ref[f"{id}.value"] == 0
+            else dash.no_update
+        )
         for id in ["qoi", "normalization", "extraFilters", "forms"]
     ]
 
@@ -563,9 +564,11 @@ def updateFiltersFromInputs(
 
         # Pull out options
         standard = [
-            ref[f"{id}.value"]
-            if ref[f"{id}.value"] or ref[f"{id}.value"] == 0
-            else dash.no_update
+            (
+                ref[f"{id}.value"]
+                if ref[f"{id}.value"] or ref[f"{id}.value"] == 0
+                else dash.no_update
+            )
             for id in ["qoi", "normalization", "extraFilters", "forms"]
         ]
         # Pull out custom equation labels and filter details
@@ -578,12 +581,14 @@ def updateFiltersFromInputs(
 
         # Only update filters specified in the qoi and extraFilters
         ovalues = [
-            v
-            if (
-                k in standard[0]
-                or k in ([] if standard[2] == dash.no_update else standard[2])
+            (
+                v
+                if (
+                    k in standard[0]
+                    or k in ([] if standard[2] == dash.no_update else standard[2])
+                )
+                else dash.no_update
             )
-            else dash.no_update
             for k, v in filters.items()
         ]
         olowers = [dash.no_update if v == dash.no_update else v[0] for v in ovalues]
@@ -1142,6 +1147,7 @@ def _selectionUpdate(fig, selected, curves):
 
     return fig
 
+
 @app.callback(
     [
         Output("graphAshbyPlots", "figure"),
@@ -1224,16 +1230,16 @@ def updateGraphAshbyPlots(
     bounds = {state["id"]["qoi"]: state["value"] for state in ctx.inputs_list[-2]}
     # bounds = {k: v for k, v in zip(columns, filters)}
     #
-    # # Check for clearing click event (i.e., click event not on a data point)
-    # if any(["n_clicks" in t for t in trigger]) and len(trigger) == 1:
-    #     if selectedDataStored:
-    #         fig = go.Figure(fig)
-    #         fig.update_traces(selectedpoints=None, text=None)
-    #         return fig, dash.no_update, [], dash.no_update
-    #     else:
-    #         return dash.no_update, dash.no_update, dash.no_update, dash.no_update
-    #     # return PreventUpdate
-    #     # pass
+    # Check for clearing click event (i.e., click event not on a data point)
+    if any(["n_clicks" in t for t in trigger]) and len(trigger) == 1:
+        if selectedDataStored:
+            fig = go.Figure(fig)
+            fig.update_traces(selectedpoints=None, text=None)
+            return fig, dash.no_update, [], dash.no_update
+        else:
+            return dash.no_update, dash.no_update, dash.no_update, dash.no_update
+        # return PreventUpdate
+        # pass
 
     # Check that there are enough QOI to plot
     N = len(values)
@@ -1363,7 +1369,7 @@ def updateGraphAshbyPlots(
 
                     # logger.debug(inds)
                     # This sequence was resulting in a significant memory leak.
-                    # Adding in the pandas conversion to numpy seemed to stem the 
+                    # Adding in the pandas conversion to numpy seemed to stem the
                     # leak, although it still seems to be mildly present.
                     # https://github.com/pola-rs/polars/issues/18074
                     trace = go.Scattergl(
