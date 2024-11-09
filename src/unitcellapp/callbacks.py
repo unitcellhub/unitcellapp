@@ -166,7 +166,6 @@ def _createSubCardProps(unitcell, L, W, H, T, R, form, scustom, ssurrogate):
         # models = surrogate[form][unitcell]
 
         # Loop through each design parameter and calculate the response
-        df = _DATA[form][unitcell]
         params = ["length", "width", "height", "thickness", "radius"]
         calcs = {"length": L, "width": W, "height": H, "thickness": T, "radius": R}
         X = np.array([[L, W, H, T, R]])
@@ -207,7 +206,9 @@ def _createSubCardProps(unitcell, L, W, H, T, R, form, scustom, ssurrogate):
 
             return value
 
-        for param in df.columns:
+        # Loop through each QOI (including custom QOI) and use the surrogate
+        # model to predict the property based on the given geometric properties.
+        for param in columns:
             # Skip independent variables
             modifier = ""
             color = "green"
