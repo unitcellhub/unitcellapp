@@ -93,6 +93,7 @@ for i in range(0, len(RAW_SYMBOLS), 3):
 MARKER_SYMBOLS = _values
 
 
+@profile
 def _createSubCardViz(unitcell, L, W, H, T, R, form, nx, ny, nz, res):
     """Create a score card vizualization for a given design"""
 
@@ -165,7 +166,7 @@ def customEval(calcs, modeqn):
     return value
 
 
-@profile
+# @profile
 def _createSubCardProps(unitcell, L, W, H, T, R, form, scustom, ssurrogate):
     """Create a score card of properties for a given design"""
 
