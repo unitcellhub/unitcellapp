@@ -2025,9 +2025,11 @@ layout = dbc.Container(
                 dbc.Col(
                     children=html.Img(
                         src="assets/logo.svg",
-                        style={"align": "center", "height": "80px"},
+                        style={"align": "center", "width": "85%"},
                     ),
-                    width=dict(size=1),
+                    # width=dict(size=1),
+                    xs=4,
+                    md=1,
                     align="center",
                 ),
                 dbc.Col(
@@ -2035,9 +2037,12 @@ layout = dbc.Container(
                         children="UnitcellApp: a lattice design tool",
                         className="card-title",
                     ),
-                    width=dict(size=11),
+                    xs=12,
+                    md=11,
+                    # width=dict(size=11),
                 ),
             ],
+            justify="center",
             align="center",
             className="g-0",
         ),
