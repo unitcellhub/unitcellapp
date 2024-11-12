@@ -224,7 +224,7 @@ def BOUNDS(sbounds):
         custom = [_BOUNDS_DEFAULT for _ in range(NCUSTOM)]
 
     # Create full data frame with all bounds
-    bounds = deepcopy(_BOUNDS)
+    bounds = _BOUNDS.copy()
     for i, minmax in enumerate(custom):
         bounds[f"custom{i+1}"] = minmax
 
@@ -271,12 +271,16 @@ def DATA(sdata):
     # Combine default and custom values into one dataframe
     # Note that we need a deep copy here rather than a shallow
     # copy since there are mutable global objects within this
-    # dictionary. There was a significant memory leak when 
+    # dictionary. There was a significant memory leak when
     # a shallow copy was used.
-    data = deepcopy(_DATA)
-    for form in data.keys():
-        for unitcell, df in data[form].items():
-            data[form][unitcell] = pd.concat((df, pd.DataFrame(custom[form][unitcell])))
+    # data = deepcopy(_DATA)
+    data = {}
+    for form in _DATA.keys():
+        data[form] = {}
+        for unitcell, df in _DATA[form].items():
+            data[form][unitcell] = pd.concat(
+                (df.copy(), pd.DataFrame(custom[form][unitcell]))
+            )
     #
     return data
 

@@ -143,6 +143,29 @@ def _createSubCardViz(unitcell, L, W, H, T, R, form, nx, ny, nz, res):
         return []
 
 
+# Define recursive custom evaluation function
+def customEval(calcs, modeqn):
+
+    # Evaluate the equation
+    try:
+        value = float(customeval(calcs, modeqn))
+    except:
+        # Assume this is an aspect ratio calculation where the
+        # the equation variables haven't been updated to reference
+        # the data object
+        value = float(
+            customeval(
+                calcs,
+                modeqn.replace("length", "data['length']")
+                .replace("width", "data['width']")
+                .replace("height", "data['height']"),
+            )
+        )
+
+    return value
+
+
+@profile
 def _createSubCardProps(unitcell, L, W, H, T, R, form, scustom, ssurrogate):
     """Create a score card of properties for a given design"""
 
@@ -175,37 +198,6 @@ def _createSubCardProps(unitcell, L, W, H, T, R, form, scustom, ssurrogate):
             )
         ]
 
-        # Define recursive custom evaluation function
-        def customEval(param):
-            # Pull out the custom equation definition
-            _, modeqn = models[param]["model"]
-
-            # Evaluate the equation
-            # logger.debug(f"Calcs: {calcs}")
-            # logger.debug(f"Equation: {modeqn}")
-            try:
-                value = float(customeval(calcs, modeqn))
-            except:
-                # Assume this is an aspect ratio calculation where the
-                # the equation variables haven't been updated to reference
-                # the data object
-                value = float(
-                    customeval(
-                        calcs,
-                        modeqn.replace("length", "data['length']")
-                        .replace("width", "data['width']")
-                        .replace("height", "data['height']"),
-                    )
-                )
-
-            # logger.debug(f"Evaluation: {value}")
-            # value = float(eval(modeqn))
-
-            # Store calculated value
-            calcs[param] = value
-
-            return value
-
         # Loop through each QOI (including custom QOI) and use the surrogate
         # model to predict the property based on the given geometric properties.
         for param in columns:
@@ -221,7 +213,8 @@ def _createSubCardProps(unitcell, L, W, H, T, R, form, scustom, ssurrogate):
             elif "custom" in param:
                 # Evaluate custom equation based on model predictions
                 logger.debug(f"Custom equaluation: {param}, {models[param]['model']}")
-                meanValue = customEval(param)
+                _, modeqn = models[param]["model"]
+                meanValue = customEval(calcs, modeqn)
                 uncertainty = None
                 color = "red"
                 info = (
@@ -235,7 +228,8 @@ def _createSubCardProps(unitcell, L, W, H, T, R, form, scustom, ssurrogate):
             elif "AR" in param:
                 # Evaluate custom equation based on model predictions
                 logger.debug(f"AS evaluation: {param}, {models[param]['model']}")
-                meanValue = customEval(param)
+                _, modeqn = models[param]["model"]
+                meanValue = customEval(calcs, modeqn)
                 uncertainty = None
                 color = "green"
                 info = ""
@@ -1176,7 +1170,6 @@ def _selectionUpdate(fig, selected, curves):
         State("customData", "data"),
     ],
 )
-
 # @profile
 def updateGraphAshbyPlots(
     values,
@@ -1242,6 +1235,7 @@ def updateGraphAshbyPlots(
     # Check that there are enough QOI to plot
     N = len(values)
     if N < 2:
+        del fig
         return BLANK_FIGURE, dash.no_update, dash.no_update, json.dumps([])
 
     # # If a figure already exists and data was clicked, highlight the
@@ -1272,7 +1266,7 @@ def updateGraphAshbyPlots(
         fig = go.Figure(fig)
 
         # Add in text annotations linking each pointed to its score sheet
-        _selectionUpdate(fig, selected, curves)
+        fig = _selectionUpdate(fig, selected, curves)
 
         return fig, dash.no_update, selected, dash.no_update
 
@@ -1381,6 +1375,7 @@ def updateGraphAshbyPlots(
                         customdata=data[k][subk].index[inds],
                     )
                     fig.add_trace(trace, row=r, col=c + 1)
+                    del x, y, trace
                     counter += 1
             showlegend = False
 
@@ -1422,6 +1417,9 @@ def updateGraphAshbyPlots(
                 # label = "<br>".join(label1.split(" "))
                 # fig.update_yaxes(tickprefix=label+"  ", row=r, col=c+1)
 
+    # Explicitly clear data to minimize memory leaks
+    data.clear()
+
     fig.update_layout(
         legend=dict(orientation="h", yanchor="top", y=-0.25, xanchor="left", x=0),
         height=1000,
@@ -1445,76 +1443,9 @@ def updateGraphAshbyPlots(
 
     # If there are selected points, go through and rehighlight them
     if selected["points"]:
-        _selectionUpdate(fig, selected, curves)
+        fig = _selectionUpdate(fig, selected, curves)
 
     return fig, dash.no_update, selected, json.dumps(curves)
-
-
-# def _updateSelected(ind, selected, prevChildren, prevSelected, curves):
-#     # Check to see if selection has changed. If not, return existing viz
-#     try:
-#         if not selected['points']:
-#             logger.debug(f"No points selected for visualization. Doing nothing.")
-#             return dash.no_update, dash.no_update
-#         elif selected['points'][ind] == prevSelected['points'][ind]:
-#             logger.debug(f"Visualization for {ind+1} is the same as before. Doing nothing.")
-#             return dash.no_update, dash.no_update
-#         else:
-#             logger.debug(f"Visualization for {ind+1} is different than before. Updating.")
-#     except:
-#         logger.debug(f"Visualization for {ind+1} is different than before. Updating.")
-
-#     try:
-#         logger.debug(f"Data selected: {selected['points'][ind]}")
-#         point = selected['points'][ind]
-#         curveNumber = point["curveNumber"]
-#         index = point["customdata"]
-#         curve = curves[curveNumber]
-#         split = curve.split(" (")
-#         unitcell = split[0]
-#         form = split[1][:-1]
-#         parameters = DATA[form][unitcell][['length', 'width', 'height',
-#                                             'thickness', 'radius']].iloc[index]
-#         L, W, H, T, R = parameters
-
-#         # Set the rendering resolution based on the unitcell type
-#         if form.lower() == "walledtpms":
-#             res = 0.4
-#         else:
-#             if "honeycomb" in unitcell.lower() or "foam" in unitcell.lower():
-#                 res = 0.4
-#             else:
-#                 res = 0.2
-
-#         # Create the card
-#         subcard = _createSubCard(unitcell, L, W, H, T, R, form, 1, 1, 1, res)
-#         return subcard, selected
-#     except:
-#         logger.debug(f"Nothing selected for column {ind+1}")
-#         return [], None
-
-
-# @app.callback(
-#     [Output(f'selected{i}-viz', 'children') for i in range(1, 4)] +\
-#     [Output(f'selected{i}-vizPrevious', 'data') for i in range(1, 4)],
-#     [Input('selectedData', 'data'),
-#     ],
-#     [State(f'selected{i}-viz', 'children') for i in range(1, 4)] +\
-#     [State(f'selected{i}-vizPrevious', 'data') for i in range(1, 4)]
-# )
-# def updatedSelected(selected, *args):
-#     # Pull out state variables
-#     ivizs = args[:3]
-#     ivizsPrevious = args[3:]
-
-#     # Create updated outputs
-#     updates = [_updateSelected(i, selected, ivizs[i], ivizsPrevious)
-#                                                     for i in range(3)]
-
-#     # Separate updates to the appropriate output format
-#     ovizs, ovizsPrevious = [[u[i] for u in updates] for i in range(2)]
-
-#     return ovizs + ovizsPrevious
 
 
 @app.callback(
@@ -1594,39 +1525,19 @@ def updateSelectedComparison(selected, scustom, scurves, sdata):
             # style={"text-align":"right"})])]
             pass
 
+    # Explicitly clear data to minimize memory leaks.
+    data.clear()
+    del data
+
     # If output data exists, form the data into a unified table for comparison
     # @TODO In the future, it would be nice to convert the comparison over
     # to bar chart representation to give a better sense of the relative
     # scaling differences
     if output:
-        # header = [
-        #             html.Thead(
-        #                 html.Tr(
-        #                     [html.Th("QOI", style=dict(width="66%"))] +\
-        #                     [html.Th(f"Selected {i+1}")
-        #                             for i in range(len(output))]
-        #                 )
-        #             )
-        #         ]
         # Pull out the first set of data for reference
         ref = output[0][2]
 
-        # columns = [{"name": "QOI", "id": "qoi"}]
-        # columns += [{"name": f"Selected {i+1}", "id": f"selected{i+1}",
-        #             "presentation": "markdown"}
-        #                                     for i in range(len(output))]
-
         columns = ["QOI"] + [f"Selected {i+1}" for i in range(len(output))]
-
-        # logger.debug(columns)
-
-        # Create a helper function to merge dictionaries
-        # def merge(d1, d2):
-        #     return {**d1, **d2}
-
-        # data = [merge({"qoi": "Image"},
-        #               {f"selected{i+1}": f"{d[0]}"
-        #                         for i, d in enumerate(output)})]
 
         data = [[("", "")] + [html.Img(src=d[0]) for d in output]]
 
@@ -1670,6 +1581,8 @@ def updateSelectedComparison(selected, scustom, scurves, sdata):
             dbc.Table(header + rows, striped=True, hover=True),
         ]
 
+        data.clear()
+        del options, data
         return out
     else:
         return []
@@ -1881,6 +1794,7 @@ def updateCardViz(unitcellForm, L, W, H, T, nx, ny, nz, res):
     [State("customOptions", "data"), State("customSurrogates", "data")],
     prevent_initial_call=True,
 )
+@profile
 def updateCardProps(unitcellForm, L, W, H, T, scustom, ssurrogate):
     try:
         split1 = unitcellForm.split(" (")
