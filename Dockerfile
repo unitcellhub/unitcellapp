@@ -1,45 +1,3 @@
-# # Load in the baseline miniconda environment
-# FROM continuumio/miniconda3
-#
-# # Generate quirements file using
-# # uv pip compile pyproject.toml -o requirements.txt
-#
-# # Make RUN commands use `bash --login`:
-# SHELL ["/bin/bash", "--login", "-c"]
-#
-#
-# # Copy in relevant files
-# # Note: The Heroku webservice clears the /tmp folder, so that isn't a good
-# # location to store files.
-# RUN mkdir -p /unitcellapp
-# COPY requirements.txt /unitcellapp/
-# COPY docker/ /unitcellapp/docker/
-#
-# # Initialize conda with bash, which is required prior to the use of conda
-# RUN conda init bash
-#
-# # Create a new python environment
-# RUN --mount=type=cache,target=/root/.cache/conda \
-#     conda env create -f /unitcellapp/docker/environment.yml
-#
-# # Load in the files that are likely to change after the environment
-# # setup.
-# COPY src/unitcellapp/ /unitcellapp/unitcellapp/
-# WORKDIR /unitcellapp/
-#
-# # Create a new user. This isn't required, but is useful to add in to verify
-# # that the container runs as a non-root user.
-# RUN useradd -m unitcellapp
-# USER unitcellapp
-#
-# # Run unitcellapp
-# # Note: Heroku runs as an arbitrary user, which causes issues with the default
-# # setup of the environment and thus requires some redefinitions. 
-# CMD conda init 1> /dev/null \
-#     && source ~/.bashrc \
-#     && conda activate unitcellapp \
-#     && gunicorn --config /unitcellapp/docker/gunicorn.config.py --bind 0.0.0.0:$PORT unitcellapp.index:server
-#
 # Use a Python image with uv pre-installed
 FROM ghcr.io/astral-sh/uv:python3.10-bookworm-slim
 
@@ -49,7 +7,11 @@ LABEL org.opencontainers.image.source="https://github.com/unitcellhub/unitcellap
 # Since some of the packages don't have pip wheels, they need to be
 # installed from git. To do so, we need to install git.
 # Additionally, some of the visualization libraries require libgl
-RUN apt-get update && apt-get install -y git libgl1-mesa-glx libxrender1
+RUN --mount=target=/var/lib/apt/lists,type=cache,sharing=locked \
+    --mount=target=/var/cache/apt,type=cache,sharing=locked \
+    rm -f /etc/apt/apt.conf.d/docker-clean \
+    && apt-get update \
+    && apt-get install -y git libgl1-mesa-glx libxrender1
 
 # Install the project into `/app`
 WORKDIR /app
@@ -95,5 +57,5 @@ RUN useradd -m unitcellapp
 USER unitcellapp
 
 # Run the application by using gunicorn by default
-CMD ["gunicorn", "--config", "docker/gunicorn.config.py", "unitcellapp.index:server"]
-
+# CMD ["gunicorn", "--config", "docker/gunicorn.config.py", "unitcellapp.index:server"]
+CMD ["python", "-c", "from unitcellapp.index import production; production()"]

@@ -14,5 +14,5 @@ electron/
 electron.bat
 pyinstaller.bat
 pyinstaller.spec
-
+Dockerfile
 

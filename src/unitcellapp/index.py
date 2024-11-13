@@ -29,18 +29,22 @@ def debug() -> None:
 def production() -> None:
     """Run unitcellapp in a production style WSGI"""
     # Determine the number of allowable threads to use
-    import multiprocessing
+    import os
 
     from waitress import serve
 
-    threads = multiprocessing.cpu_count()
+    # Get server config values if specified
+    port = int(os.getenv("PORT", 5030))
+    threads = int(os.getenv("NUM_THREADS", 4))
+
+    # Limit the max number of threads to 12
     if threads is None:
-        threads = 8
+        threads = 4
     elif threads > 12:
         threads = 12
 
     # Serve the application using waitress
-    serve(app.server, host="127.0.0.1", port=port, threads=threads)
+    serve(app.server, port=port, threads=threads)
 
 
 # def pyinstaller() -> None:

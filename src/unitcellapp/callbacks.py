@@ -93,7 +93,7 @@ for i in range(0, len(RAW_SYMBOLS), 3):
 MARKER_SYMBOLS = _values
 
 
-@profile
+# @profile
 def _createSubCardViz(unitcell, L, W, H, T, R, form, nx, ny, nz, res):
     """Create a score card vizualization for a given design"""
 
@@ -1795,7 +1795,7 @@ def updateCardViz(unitcellForm, L, W, H, T, nx, ny, nz, res):
     [State("customOptions", "data"), State("customSurrogates", "data")],
     prevent_initial_call=True,
 )
-@profile
+# @profile
 def updateCardProps(unitcellForm, L, W, H, T, scustom, ssurrogate):
     try:
         split1 = unitcellForm.split(" (")
