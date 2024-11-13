@@ -231,10 +231,18 @@ def BOUNDS(sbounds):
     return bounds
 
 
-_DATA_DEFAULT = pd.DataFrame(
-    np.array([[1] * NCUSTOM for r in _DATA[k][subk]]),
-    columns=[col for col in columns if "custom" in col],
-).to_dict()
+# Create a default custom data
+_DEFAULT_CUSTOM_DATA = {
+    form: {
+        unitcell: {
+            col: {i: 1 for i in range(df.shape[0])}
+            for col in columns
+            if "custom" in col
+        }
+        for unitcell, df in _DATA[form].items()
+    }
+    for form in _DATA.keys()
+}
 
 
 def DATA(sdata):
@@ -257,16 +265,14 @@ def DATA(sdata):
         custom = json.loads(sdata)
         assert (
             custom.keys() == _DATA.keys()
-        ), "Custom stored data has the incorrect from keys."
+        ), "Custom stored data has the incorrect form keys."
         for form in _DATA.keys():
             assert (
                 custom[form].keys() == _DATA[form].keys()
-            ), "Custom stored data has the informed unitcell keys."
-    except:
-        custom = {
-            form: {unitcell: _DATA_DEFAULT for unitcell in _DATA[form].keys()}
-            for form in _DATA.keys()
-        }
+            ), "Custom stored data has the incorrect unitcell keys."
+    except Exception as ex:
+        logger.debug(f"Could not find prestored custom data: {ex}")
+        custom = _DEFAULT_CUSTOM_DATA.copy()
 
     # Combine default and custom values into one dataframe
     # Note that we need a deep copy here rather than a shallow
@@ -278,8 +284,16 @@ def DATA(sdata):
     for form in _DATA.keys():
         data[form] = {}
         for unitcell, df in _DATA[form].items():
+            # Convert the custom values to a dataframe and
+            # ensure the index consists of integers, since
+            # the JSON storage of the custom values defaults
+            # to strings, which messes up the concat with the
+            # nominal data dataframe.
+            dfcustom = pd.DataFrame.from_dict(custom[form][unitcell])
+            dfcustom.index = dfcustom.index.astype(int)
             data[form][unitcell] = pd.concat(
-                (df.copy(), pd.DataFrame(custom[form][unitcell]))
+                (df.copy(), dfcustom),
+                axis=1,
             )
     #
     return data

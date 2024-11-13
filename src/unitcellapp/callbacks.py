@@ -611,7 +611,7 @@ def updateFiltersFromInputs(
 
         # Created an indexed list of what needs to be updated
         toupdate = [
-            True if targetqoi in qoi["id"]["qoi"] else False
+            True if targetqoi == qoi["id"]["qoi"] else False
             for i, qoi in enumerate(ctx.inputs_list[0])
         ]
 
@@ -694,7 +694,7 @@ def updateFiltersFromInputs(
                 pass
             else:
                 logger.debug(
-                    f"The QOI filter {qoi} is not visiable, "
+                    f"The QOI filter {qoi} is not visable, "
                     f"but the slider range {ivalues[i]} "
                     f"hasn't been reset to [{imins[i]}, "
                     f"{imaxs[i]}]. Doing so now."
@@ -909,8 +909,8 @@ def updateCustomQOI(eqns, ssurrogate, sbounds, sdata):
                     logger.debug(f"Equations: {eqns}, {ind}")
                     newinds += [
                         k + 1
-                        for k, (subvarsiables, subeqn) in enumerate(modeqns)
-                        if subeqn and k != ind - 1 and (f"custom{ind}" in subvarsiables)
+                        for k, (subvariables, subeqn) in enumerate(modeqns)
+                        if subeqn and k != ind - 1 and (f"custom{ind}" in subvariables)
                     ]
 
                     # Modify the equation string to appropriately reference the
@@ -926,6 +926,9 @@ def updateCustomQOI(eqns, ssurrogate, sbounds, sdata):
                         for subk in data[k].keys():
                             evaluated = customeval(data[k][subk], modeqn)
                             # if np.any(np.isnan(evaluated)):
+                            #     logger.debug(
+                            #         f"NaNs in custom QOI {ind}: {evaluated}, {data[k][subk]}"
+                            #     )
                             #     error = f"Custom QOI {ind} equation {modeqn} resulted in NaN values."
                             #     logger.error(error)
                             #     raise RuntimeError(error)
