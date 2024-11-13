@@ -4,6 +4,9 @@
 It integrates the vast database of lattice properties in *UnitcellDB*, the geometry and visualization engine of *UnitcellEngine*, and a elements of Machine Learning (ML) to enable a user to select an ideal lattice geometry for a given engineering application.
 The primary interface is built upon Ploty's open source Dash platform, which creates a Flask-based web application.
 
+## Public web application
+Try *UnitcellApp* without the need to install software at [www.unitcellapp.org](https://www.unitcellapp.org). 
+
 ## Installation
 To enable broad usage, a number of deployment frameworks exists depending on a user's need.
 Overall, there are three primary frameworks:
