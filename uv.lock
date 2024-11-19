@@ -1440,7 +1440,7 @@ wheels = [
 
 [[package]]
 name = "unitcellapp"
-version = "0.0.15"
+version = "0.0.16.dev0"
 source = { editable = "." }
 dependencies = [
     { name = "blosc" },
@@ -1461,7 +1461,7 @@ dependencies = [
     { name = "waitress" },
 ]
 
-[package.dependency-groups]
+[package.dev-dependencies]
 dev = [
     { name = "memory-profiler" },
     { name = "pyinstaller" },
@@ -1488,7 +1488,7 @@ requires-dist = [
     { name = "waitress", specifier = ">=3.0.0" },
 ]
 
-[package.metadata.dependency-groups]
+[package.metadata.requires-dev]
 dev = [
     { name = "memory-profiler", specifier = ">=0.61.0" },
     { name = "pyinstaller", specifier = ">=6.10.0" },
