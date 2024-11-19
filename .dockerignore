@@ -6,6 +6,7 @@
 **/.conda/
 **/*.bak
 **/*.h5
+.env
 database/
 build/
 dist/
