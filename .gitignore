@@ -10,6 +10,7 @@ config.json
 .venv/
 .conda/
 *.bak
+.env
 
 # Ignore UnitcellApp distribution files
 dist/*
