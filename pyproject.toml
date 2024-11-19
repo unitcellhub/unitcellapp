@@ -49,12 +49,12 @@ parse = """(?x)
     (?P<patch>0|[1-9]\\d*)
     (?:
         -                             # dash separator for pre-release section
-        (?P<pre>[a-zA-Z-]+)         # pre-release label
-        (?P<distance_to_latest_tag>0|[1-9]\\d*)        # pre-release version number
+        (?P<pre_l>[a-zA-Z-]+)         # pre-release label
+        (?P<pre_n>0|[1-9]\\d*)        # pre-release version number
     )?                                # pre-release section is optional
 """
 serialize = [
-    "{major}.{minor}.{patch}-{pre}{distance_to_latest_tag}",
+    "{major}.{minor}.{patch}-{pre_n}{pre_l}",
     "{major}.{minor}.{patch}",
 ]
 search = "{current_version}"
@@ -71,7 +71,7 @@ message = "Bump version: {current_version} → {new_version}"
 pre_commit_hooks = ["uv sync", "git add uv.lock"]
 commit_args = ""
 
-[tool.bumpversion.parts.pre]
+[tool.bumpversion.parts.pre_l]
 values = ["dev", "final"]
 optional_value = "final"
 
