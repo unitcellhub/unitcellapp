@@ -1,7 +1,7 @@
 [project]
 name = "unitcellapp"
 description = "Lattice unitcell geometry and analysis framework"
-version = "0.0.16-dev0"
+version = "0.0.16-1dev"
 readme = "README.md"
 requires-python = ">=3.10, <3.12"
 license = {file = "LICENSE"}
@@ -42,7 +42,7 @@ cache = "unitcellapp.cache:cacheCreate"
 
 
 [tool.bumpversion]
-current_version = "0.0.16-dev0"
+current_version = "0.0.16-1dev"
 parse = """(?x)
     (?P<major>0|[1-9]\\d*)\\.
     (?P<minor>0|[1-9]\\d*)\\.
