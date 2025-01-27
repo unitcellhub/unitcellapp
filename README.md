@@ -72,7 +72,7 @@ docker build --tag unitcellhub/unitcellapp:custom .
 To run *UnitcellApp* using the docker implementation, run
 
 ```
-docker run --env PORT=5030 --publish 5030:5030 --terminate unitcellhub/unitcellapp:<tag>
+docker run --env PORT=5030 --publish 5030:5030 unitcellhub/unitcellapp:<tag>
 ```
 and then access *UnitcellApp* in your preferred browser at http://127.0.0.1:5030.
 Here, <tag> refers to the version of *UnitcellApp* that has been pulled or built (such as "latest", "0.0.11", or "custom" as defined the the previous examples.)
