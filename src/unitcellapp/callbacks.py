@@ -402,7 +402,7 @@ def storeConfigFile(contents, *states):
     if keys != expected:
         logger.error(
             "Uploaded config file appears to be inconsistent "
-            "with the application setup. The primary differenes "
+            "with the application setup. The primary differences "
             f"are {expected-keys}"
         )
         return True, dash.no_update, None
@@ -414,7 +414,7 @@ def storeConfigFile(contents, *states):
             json.dump(config, f)
     except:
         logger.debug(
-            "Unable to save config file locally. There "
+            f"Unable to save config file {CONFIG_FILE} locally. There "
             "might be an issue with the file formatting. Make "
             "sure it is a proper json file."
         )

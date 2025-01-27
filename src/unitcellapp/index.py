@@ -36,12 +36,19 @@ def production() -> None:
     # Get server config values if specified
     port = int(os.getenv("PORT", 5030))
     threads = int(os.getenv("NUM_THREADS", 4))
+    logLevel = int(os.getenv("LOGLEVEL", logging.WARNING))
 
     # Limit the max number of threads to 12
     if threads is None:
         threads = 4
     elif threads > 12:
         threads = 12
+
+    try:
+        logger.setLevel(logLevel)
+    except:
+        logger.error(f"Couldn't set log level to '{logLevel}'. Environment "
+                     "variable LOGLEVEL was set incorrect.")
 
     # Serve the application using waitress
     serve(app.server, port=port, threads=threads)

@@ -54,6 +54,7 @@ ENTRYPOINT []
 # Create a new user. This isn't required, but is useful to add in to verify
 # that the container runs as a non-root user.
 RUN useradd -m unitcellapp
+RUN touch /app/src/config.json && chown unitcellapp:unitcellapp /app/src/config.json
 USER unitcellapp
 
 # Run the application by using gunicorn by default
