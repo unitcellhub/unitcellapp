@@ -25,10 +25,9 @@ dependencies = [
     "numpy<2.0.0",
     "pyvista>=0.44.1",
     "scikit-learn==1.0.2",
-    "sdf",
-    "unitcellengine>=0.0.4",
     "vtk>=9.3.1",
     "waitress>=3.0.0",
+    "unitcellengine>=0.0.11",
 ]
 
 [project.urls]
@@ -90,15 +89,6 @@ filename = "pyproject.toml"
 search = "version = \"{current_version}\""
 replace = "version = \"{new_version}\""
 
-# [tool.hatch.version]
-# source = "vcs"
-# 
-# [tool.hatch.build.hooks.vcs]
-# version-file = "src/unitcellapp/_version.py"
-
-[tool.uv.sources]
-sdf = { git = "https://github.com/fogleman/sdf.git",  rev = "main" }
-
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"   
@@ -108,6 +98,7 @@ dev = [
     "python-dotenv>=1.0.1",
     "pyinstaller>=6.10.0",
     "memory-profiler>=0.61.0",
+    "ipython>=8.31.0",
 ]
 
 
