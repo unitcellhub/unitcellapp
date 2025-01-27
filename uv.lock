@@ -1586,7 +1586,7 @@ wheels = [
 
 [[package]]
 name = "unitcellapp"
-version = "0.0.16"
+version = "0.0.17.dev4"
 source = { editable = "." }
 dependencies = [
     { name = "blosc" },
