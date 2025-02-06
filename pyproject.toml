@@ -27,7 +27,7 @@ dependencies = [
     "scikit-learn==1.0.2",
     "vtk>=9.3.1",
     "waitress>=3.0.0",
-    "unitcellengine>=0.0.11",
+    "unitcellengine>=0.0.12",
 ]
 
 [project.urls]
