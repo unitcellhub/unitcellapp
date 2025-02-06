@@ -1628,7 +1628,7 @@ requires-dist = [
     { name = "numpy", specifier = "<2.0.0" },
     { name = "pyvista", specifier = ">=0.44.1" },
     { name = "scikit-learn", specifier = "==1.0.2" },
-    { name = "unitcellengine", specifier = ">=0.0.11" },
+    { name = "unitcellengine", specifier = ">=0.0.12" },
     { name = "vtk", specifier = ">=9.3.1" },
     { name = "waitress", specifier = ">=3.0.0" },
 ]
@@ -1643,7 +1643,7 @@ dev = [
 
 [[package]]
 name = "unitcellengine"
-version = "0.0.11"
+version = "0.0.12"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "dill" },
@@ -1663,9 +1663,8 @@ dependencies = [
     { name = "unitcellsdf" },
     { name = "vtk" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/70/b7/db771e2c55a2328aad53255ffff3f4baa372ce79469875ea0306f7cd3189/unitcellengine-0.0.11.tar.gz", hash = "sha256:b8336417f41db27eda72ebe3d36fad735ab63eb2570eff7c1b88b97d4eea9e16", size = 91309110 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/ec/7e/6b0f39deb16d0be541a698bfc3eb29441e4b03553f528c3ab73285ab7a5a/unitcellengine-0.0.11-py3-none-any.whl", hash = "sha256:08f60870d74ac451483ac9081633f8285ac5f0aafa4832a470d75bb4d8b80f1c", size = 122944 },
+    { url = "https://files.pythonhosted.org/packages/55/d6/ac138c32edf53cd6f49b8abd88a8609f88533ff76f9b23e362c45f4463a0/unitcellengine-0.0.12-py3-none-any.whl", hash = "sha256:cd07fe76bba679cc870e353efcffaa8b1942c7bafb0a762cf1d89e7b292baef3", size = 5327621 },
 ]
 
 [[package]]
