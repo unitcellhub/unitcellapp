@@ -76,18 +76,12 @@ optional_value = "final"
 
 [[tool.bumpversion.files]]
 filename = "src/unitcellapp/__init__.py"
-search = "version = \"{current_version}\""
-replace =  "version = \"{new_version}\""
 
 [[tool.bumpversion.files]]
 filename = "electron/package.json"
-search = "\"version\": \"{current_version}\""
-replace =  "\"version\": \"{new_version}\""
 
 [[tool.bumpversion.files]]
 filename = "pyproject.toml"
-search = "version = \"{current_version}\""
-replace = "version = \"{new_version}\""
 
 [build-system]
 requires = ["hatchling"]
