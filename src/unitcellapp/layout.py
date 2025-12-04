@@ -643,13 +643,27 @@ def _createCard(column):
 
 aboutText = """
 
-The Lattice Design Tool is a comprehensive design tool.
-It leverages a database of more than 10,000 simulated point designs.
-Provides a 
+Lattice structures are multiscale architectures consisting of periodically repeating unit cells that create material systems with exceptional property-to-weight ratios. 
+Found throughout nature—from the trabecular network in bone to the cellular structure of plant stems—these cellular materials achieve remarkable mechanical efficiency through strategic distribution of material at the mesoscale. 
+Engineers have long recognized the value of lattices for applications requiring high specific stiffness, controlled energy absorption, or tailored thermal conductivity. 
+However, traditional manufacturing constraints historically limited their implementation to simple geometries like aluminum honeycomb cores in sandwich panels. 
+The advent of additive manufacturing has fundamentally expanded the accessible design space, enabling fabrication of complex three-dimensional lattice topologies in metals, polymers, and ceramics. 
+This manufacturing revolution has created both an opportunity and a challenge: while engineers can now produce virtually any lattice geometry, the vast design space—spanning countless unit cell types, relative densities, and geometric parameters—makes systematic design optimization exceptionally difficult without specialized analysis tools.
+
+UnitcellApp provides engineers and researchers with a comprehensive tool for designing and analyzing periodic lattice structures. 
+Whether you're developing energy-absorbing materials, lightweight structural components, or thermal management solutions, UnitcellApp enables rapid evaluation of lattice performance based on simulated data combined with machine learning acceleration. 
+The platform leverages homogenization theory to efficiently predict mechanical and thermal properties across different unit cell geometries, eliminating the computational cost of full-scale finite element analysis while maintaining engineering accuracy.
+
+Explore thousands of pre-computed lattice designs through interactive Ashby plots, or define custom geometries tailored to your specific requirements. 
+The underlying Gaussian Process Regression models, trained on over 10,000 simulated designs, provide near-instantaneous property predictions for arbitrary unit cell configurations. 
+This data-driven approach enables systematic exploration of the vast lattice design space—spanning multiple topologies, relative densities, and aspect ratios—to identify optimal structures that would be impractical to discover through traditional trial-and-error methods.
 
 """
 about = [
     html.Br(),
+    dcc.Markdown(
+        aboutText
+    ),
     dbc.Row(
         [
             dbc.Col(
@@ -2077,7 +2091,7 @@ layout = dbc.Container(
                 [
                     html.Div(
                         [
-                            "© 2024 ",
+                            "© 2024-2025 ",
                             html.A(
                                 "UnitcellHub", href="https://www.github.com/unitcellhub"
                             ),
