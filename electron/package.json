@@ -1,6 +1,6 @@
 {
     "name": "unitcellapp",
-    "version": "0.0.18",
+    "version": "0.0.19-dev1",
     "description": "Design and select lattice unitcells based on a given application.",
     "main": "main.js",
     "scripts": {
