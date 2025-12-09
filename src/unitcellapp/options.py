@@ -79,21 +79,21 @@ _OPTIONS = dict(
     ),
     nu12=dict(
         name="Poisson's ratio on face X in direction Y",
-        info="Defines the effective Poisson's ratio of the unit cell on the 'X' face in the 'Y' direction (νxy).",
+        info="Defines the effective Poisson's ratio that characterizes the transverse strain in the Y-direction, when the material is stressed in the X-direction (νxy).",
         ref=["homogenizedStiffness"],
-        calc=lambda ref: nuij(ref[0], [0, 1, 0], [1, 0, 0]),
+        calc=lambda ref: nuij(ref[0], [1, 0, 0], [0, 1, 0]),
     ),
     nu23=dict(
         name="Poisson's ratio on face Y in direction Z",
-        info="Defines the effective Poisson's ratio of the unit cell on the 'Y' face in the 'Z' direction (νyz).",
+        info="Defines the effective Poisson's ratio that characterizes the transverse strain in the Z-direction, when the material is stressed in the Y-direction (νyz).",
         ref=["homogenizedStiffness"],
-        calc=lambda ref: nuij(ref[0], [0, 0, 1], [0, 1, 0]),
+        calc=lambda ref: nuij(ref[0], [0, 1, 0], [0, 0, 1]),
     ),
     nu13=dict(
         name="Poisson's ratio on face X in direction Z",
-        info="Defines the effective Poisson's ratio of the unit cell on the 'X' face in the 'Z' direction (νxz).",
+        info="Defines the effective Poisson's ratio that characterizes the transverse strain in the Z-direction, when the material is stressed in the X-direction (νxz).",
         ref=["homogenizedStiffness"],
-        calc=lambda ref: nuij(ref[0], [0, 0, 1], [1, 0, 0]),
+        calc=lambda ref: nuij(ref[0], [1, 0, 0], [0, 0, 1]),
     ),
     numin=dict(
         name="Min rel. Poisson's ratio",
